@@ -15,5 +15,14 @@ public class Name {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || o.getClass() != getClass()) {
+			return false ;
+		}
+		Name n = (Name) o ;
+		return n.getName().equals(getName()) ;
+	}
 
 }

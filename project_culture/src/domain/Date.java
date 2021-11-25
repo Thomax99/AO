@@ -54,5 +54,13 @@ public class Date {
 	public String toString() {
 		return year +"/"+month+"/"+day ;
 	}
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || o.getClass() != getClass()) {
+			return false ;
+		}
+		Date d = (Date) o ;
+		return d.getDay() == getDay() && d.getMonth() == getMonth() && d.getYear() == getYear() ;
+	}
 
 }

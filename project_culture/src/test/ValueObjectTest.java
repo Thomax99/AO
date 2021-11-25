@@ -1,5 +1,7 @@
 package test;
+import domain.Concert;
 import domain.Date;
+import domain.Drama;
 import domain.Name;
 import junit.framework.*;
 
@@ -84,5 +86,27 @@ public class ValueObjectTest extends TestCase {
 		String name = n.getName() ;
 		name.replace('o', 'f') ;
 		assertEquals(n.getName(), "Foo fighters") ;
+	}
+	public void testConcert() throws Exception {
+		Date d = new Date(2022, 11, 14) ;
+		Name n = new Name("Foo fighters") ;
+		Concert concert = new Concert(d.getYear(), d.getMonth(), d.getDay(), n.getName()) ;
+		assertEquals(d, concert.getDate()) ;
+		assertEquals(n, concert.getArtistName()) ;
+	}
+	public void testDrama() throws Exception {
+		Date d = new Date(2022, 11, 14) ;
+		Date d2 = new Date(2023, 11, 14) ;
+		Name n = new Name("Le bourgeois gentilhomme") ;
+		Drama t = new Drama(d.getYear(), d.getMonth(), d.getDay(), d2.getYear(), d2.getMonth(), d2.getDay(), n.getName()) ;
+		assertEquals(d, t.getStartDate()) ;
+		assertEquals(d2, t.getEndDate()) ;
+		assertEquals(n, t.getArtistName()) ;
+		try {
+			t = new Drama(d2.getYear(), d2.getMonth(), d2.getDay(), d.getYear(), d.getMonth(), d.getDay(), n.getName()) ;
+			fail("IllegalArgumentException not thrown with start date > end date") ;
+		} catch(IllegalArgumentException e) {
+			
+		}
 	}
 }
