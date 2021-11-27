@@ -1,11 +1,12 @@
 package domain;
 
-public class Drama {
+public class Drama extends Event {
 	private final Date startDate, endDate;
 	private final Name titleName;
 
 	public Drama(int startYear, int startMonth, int startDay,
-				int endYear, int endMonth, int endDay, String titleName) {
+				int endYear, int endMonth, int endDay, String titleName, int placeNumber) {
+		super(placeNumber) ;
 		if (startYear > endYear || (startYear == endYear && (startMonth > endMonth || (startMonth == endMonth && startDay > endDay)))) {
 			throw new IllegalArgumentException("The starting date is greater than the ending date") ;
 		}

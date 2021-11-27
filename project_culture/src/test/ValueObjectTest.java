@@ -3,6 +3,7 @@ import domain.Concert;
 import domain.Date;
 import domain.Drama;
 import domain.Name;
+import domain.OpenDate;
 import junit.framework.*;
 
 public class ValueObjectTest extends TestCase {
@@ -90,21 +91,54 @@ public class ValueObjectTest extends TestCase {
 	public void testConcert() throws Exception {
 		Date d = new Date(2022, 11, 14) ;
 		Name n = new Name("Foo fighters") ;
-		Concert concert = new Concert(d.getYear(), d.getMonth(), d.getDay(), n.getName()) ;
+		Concert concert = new Concert(d.getYear(), d.getMonth(), d.getDay(), n.getName(), 1000) ;
 		assertEquals(d, concert.getDate()) ;
 		assertEquals(n, concert.getArtistName()) ;
+		assertEquals(1000, concert.getPlaceNumber()) ;
+		try {
+			concert = new Concert(d.getYear(), d.getMonth(), d.getDay(), n.getName(), -1) ;
+			fail("IllegalArgumentException not thrown with number of place < 0") ;
+		} catch(IllegalArgumentException e) {
+			
+		}
+
 	}
 	public void testDrama() throws Exception {
 		Date d = new Date(2022, 11, 14) ;
 		Date d2 = new Date(2023, 11, 14) ;
 		Name n = new Name("Le bourgeois gentilhomme") ;
-		Drama t = new Drama(d.getYear(), d.getMonth(), d.getDay(), d2.getYear(), d2.getMonth(), d2.getDay(), n.getName()) ;
+		Drama t = new Drama(d.getYear(), d.getMonth(), d.getDay(), d2.getYear(), d2.getMonth(), d2.getDay(), n.getName(), 1000) ;
 		assertEquals(d, t.getStartDate()) ;
 		assertEquals(d2, t.getEndDate()) ;
 		assertEquals(n, t.getArtistName()) ;
+		assertEquals(1000, t.getPlaceNumber()) ;
 		try {
-			t = new Drama(d2.getYear(), d2.getMonth(), d2.getDay(), d.getYear(), d.getMonth(), d.getDay(), n.getName()) ;
+			t = new Drama(d2.getYear(), d2.getMonth(), d2.getDay(), d.getYear(), d.getMonth(), d.getDay(), n.getName(), 1000) ;
 			fail("IllegalArgumentException not thrown with start date > end date") ;
+		} catch(IllegalArgumentException e) {
+			
+		}
+		try {
+			t = new Drama(d2.getYear(), d2.getMonth(), d2.getDay(), d.getYear(), d.getMonth(), d.getDay(), n.getName(), -1) ;
+			fail("IllegalArgumentException not thrown with place number < 0") ;
+		} catch(IllegalArgumentException e) {
+			
+		}
+	}
+	public void testOpenDate() throws Exception {
+		Date d = new Date(2022, 11, 30) ;
+		OpenDate date = new OpenDate(d.getYear(), d.getMonth(), d.getDay(), 12) ;
+		assertEquals(date.getOpenHour(), 12) ;
+		assertEquals(date.getOpenDay(), d) ;
+		try {
+			date = new OpenDate(d.getYear(), d.getMonth(), d.getDay(), -1) ;
+			fail("IllegalArgumentException not thrown with hour < 0") ;
+		} catch(IllegalArgumentException e) {
+			
+		}
+		try {
+			date = new OpenDate(d.getYear(), d.getMonth(), d.getDay(), 24) ;
+			fail("IllegalArgumentException not thrown with hour >= 24") ;
 		} catch(IllegalArgumentException e) {
 			
 		}

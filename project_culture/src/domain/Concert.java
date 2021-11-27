@@ -6,11 +6,12 @@ package domain;
  * @author thomas
  *
  */
-public class Concert {
+public class Concert extends Event {
 	private final Date date;
 	private final Name name;
 
-	public Concert(int year, int month, int day, String artistName) {
+	public Concert(int year, int month, int day, String artistName, int placeNumber) {
+		super(placeNumber) ;
 		this.date = new Date(year, month, day) ;
 		this.name = new Name(artistName) ;
 	}
