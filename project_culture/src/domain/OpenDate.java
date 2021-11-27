@@ -6,7 +6,7 @@ package domain;
  * @author thomas
  *
  */
-public class OpenDate {
+public class OpenDate implements Comparable {
 		
 	private final Date openDay ;
 	private final int openHour ;
@@ -25,4 +25,28 @@ public class OpenDate {
 	public int getOpenHour() {
 		return openHour ;
 	}
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) {
+			return false ;
+		}
+		OpenDate d = (OpenDate) o ;
+		return d.getOpenDay().equals(getOpenDay()) && d.getOpenHour() == getOpenHour() ;
+	}
+	@Override
+	public int compareTo(Object o) {
+		if (o == null || getClass() != o.getClass()) {
+			return 0 ;
+		}
+		OpenDate d = (OpenDate) o ;
+		if (d.getOpenDay().equals(getOpenDay())) {
+			if (getOpenHour() < d.getOpenHour()) {
+				return -1 ;
+			} else if (getOpenHour() > d.getOpenHour()) {
+				return 1 ;
+			}
+			return 0 ;
+		}
+		return d.getOpenDay().compareTo(getOpenDay()) ;
+	}
+
 }
