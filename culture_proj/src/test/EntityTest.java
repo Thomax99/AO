@@ -6,7 +6,7 @@ import java.util.List;
 import domain.Date;
 import domain.OpenDate;
 import domain.ShowRoom;
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class EntityTest extends TestCase {
 	public void testShowRoomClassical() throws Exception {

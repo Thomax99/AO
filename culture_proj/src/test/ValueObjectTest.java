@@ -4,7 +4,7 @@ import domain.Date;
 import domain.Drama;
 import domain.Name;
 import domain.OpenDate;
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class ValueObjectTest extends TestCase {
 	/**

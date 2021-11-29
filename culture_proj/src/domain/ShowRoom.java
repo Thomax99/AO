@@ -14,20 +14,18 @@ import java.util.TreeMap;
  *
  */
 public class ShowRoom {
-	private static int globalId ;
+	private static int globalId = 0 ;
 	private final int id ;
 	private int capacity ;
-	private final List<Event> eventList ;
-	private final List<OpenDate> openDays ;
+	private final Map<OpenDate, Event> events ;
 	private final Map<OpenDate, Integer> leavingCapacity ;
 	public ShowRoom(List<OpenDate>openDates, int capacity) {
 		this.id = globalId ++ ;
 		if (capacity < 0) {
 			throw new IllegalArgumentException("capacity cannot be < 0") ;
 		}
-		eventList = new LinkedList<>() ;
+		events = new TreeMap<>() ;
 		this.capacity = capacity ;
-		openDays = new LinkedList<>() ;
 		leavingCapacity = new TreeMap<>() ;
 		// pour chaque element, on regarde tous les elements pour voir si il y a egalite entre les jours et si oui on throw un illegal argument
 		for(int i = 0 ; i < openDates.size() ; i++) {
@@ -38,7 +36,7 @@ public class ShowRoom {
 					throw new IllegalArgumentException("Two openDates equals on the ShowRoom ...") ;
 				}
 			}
-			openDays.add(openDates.get(i)) ;
+			events.put(openDates.get(i), null) ;
 			leavingCapacity.put(openDates.get(i), capacity) ;
 		}
 	}
@@ -47,7 +45,7 @@ public class ShowRoom {
 		return capacity;
 	}
 	public List<OpenDate> getOpenDates() {
-		return new LinkedList<OpenDate>(openDays);
+		return new LinkedList<OpenDate>(events.keySet());
 	}
 	/**
 	 * function to know if a showroom is opened at a given date
@@ -55,7 +53,7 @@ public class ShowRoom {
 	 * @return -1 if it is not open, the hour else
 	 */
 	public int isOpened(Date d) {
-		for (OpenDate od : openDays) {
+		for (OpenDate od : events.keySet()) {
 			if (od.getOpenDay().equals(d)) {
 				return od.getOpenHour() ;
 			}
@@ -72,5 +70,26 @@ public class ShowRoom {
 			return true ;
 		}
 		return false ;
+	}
+	public void addEvent(Event evt, OpenDate d) {
+		if (!events.containsKey(d) || events.get(d) != null) {
+			throw new RuntimeException("Error : there is already an event at this date or the showroom is not opened at this date") ;
+		}
+		events.put(d, evt) ;
+	}
+	public List<Event> getEvents() {
+		List<Event> backList = new LinkedList<>() ;
+		events.keySet().forEach(k -> {
+			if (k != null) {
+				backList.add(events.get(k)) ;
+			}
+		});
+		return backList ;
+	}
+	public Event getEvenByDate(OpenDate d) {
+		if (!events.containsKey(d)) {
+			throw new RuntimeException("Error : the showroom is not opened") ;
+		}
+		return events.get(d) ;
 	}
 }
