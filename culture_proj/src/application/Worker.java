@@ -9,6 +9,7 @@ public class Worker extends Thread {
 	
 	public void run() {
 		while (true) {
+			while (bag.isEmpty()) ;
 			Command c = bag.popCommand() ;
 			c.execute();
 		}

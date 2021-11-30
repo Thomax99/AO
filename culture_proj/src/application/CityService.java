@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import domain.Event;
 import domain.Repository;
+import domain.ShowRoom;
 import infra.EventCatalog;
 
 public class CityService extends Observable {
@@ -16,5 +17,11 @@ public class CityService extends Observable {
 	}
 	public List<Event> getEvents() {
 		return events.getEvents() ;
+	}
+	public List<ShowRoom> getShowRooms(int cityId) {
+		if (repo.findCityById(cityId) == null) {
+			throw new RuntimeException("id not contained") ;
+		}
+		return repo.findCityById(cityId).getShowrooms() ;
 	}
 }

@@ -14,6 +14,9 @@ public class CommandBag {
 	 * blocking when no element on the deque
 	 * @return
 	 */
+	public boolean isEmpty() {
+		return commands.isEmpty() ;
+	}
 	public Command popCommand() {
 		return commands.pop();
 	}

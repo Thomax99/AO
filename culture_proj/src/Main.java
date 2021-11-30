@@ -23,51 +23,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import user.Controller;
 
 public class Main extends Application {
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		Button button = new Button();
-		button.setText("Open a New Window");
-
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-
-				Label secondLabel = new Label("I'm a Label on new Window");
-
-				StackPane secondaryLayout = new StackPane();
-				secondaryLayout.getChildren().add(secondLabel);
-
-				Scene secondScene = new Scene(secondaryLayout, 230, 100);
-
-				// New window (Stage)
-				Stage newWindow = new Stage();
-				newWindow.setTitle("Second Stage");
-				newWindow.setScene(secondScene);
-
-				// Set position of second window, related to primary window.
-				newWindow.setX(primaryStage.getX() + 200);
-				newWindow.setY(primaryStage.getY() + 100);
-
-				newWindow.show();
-			}
-		});
-
-		StackPane root = new StackPane();
-		root.getChildren().add(button);
-
-		Scene scene = new Scene(root, 450, 250);
-
-		primaryStage.setTitle("JavaFX Open a new Window (o7planning.org)");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
 	
 	public static void main(String[] args) {
+
+		launch(args);
+        }
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		List<Event> events = new LinkedList<>() ;
 		events.add(new Concert(2022, 5, 13, "Joseph Allard", 600)) ;
 		events.add(new Concert(2022, 5, 13, "La Bolduc", 400)) ;
@@ -86,7 +53,7 @@ public class Main extends Application {
 		EventCatalog catalog = new EventCatalog(events) ;
 		
 		List<OpenDate> dates = new LinkedList<>() ;
-		for (int i = 0 ; i < 10 ; i++) {
+		for (int i = 1 ; i < 10 ; i++) {
 			dates.add(new OpenDate(2022, 5, i, 8)) ;
 		}
 		
@@ -111,8 +78,7 @@ public class Main extends Application {
 		CityService service = new CityService(repo, catalog) ;
 		CQRS.setCityService(service);
 		
+		Controller c = new Controller(bag, city.getId(), primaryStage) ;
 		
-		launch(args);
 	}
-
 }

@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,6 +23,9 @@ public class City {
 	}
 	public void addShowRoom(ShowRoom showroom) {
 		showrooms.put(showroom.getId(), showroom) ;
+	}
+	public List<ShowRoom> getShowrooms() {
+		return new LinkedList<ShowRoom>(showrooms.values()) ;
 	}
 
 }
