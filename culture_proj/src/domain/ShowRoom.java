@@ -1,8 +1,5 @@
 package domain;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +37,6 @@ public class ShowRoom {
 			leavingCapacity.put(openDates.get(i), capacity) ;
 		}
 	}
-	// TODO : ajouter un event ; savoir si c'est ouvert, checker la capacite, ...
 	public int getCapacity() {
 		return capacity;
 	}
@@ -59,6 +55,9 @@ public class ShowRoom {
 			}
 		}
 		return -1 ;
+	}
+	public int getId() {
+		return this.id ;
 	}
 	public int getLeavingPlaces(OpenDate d) {
 		return leavingCapacity.containsKey(d) ? leavingCapacity.get(d) : 0 ;

@@ -1,6 +1,5 @@
 package application;
 
-import java.util.function.Consumer;
 
 /**
  * This interface represents a command
@@ -8,15 +7,8 @@ import java.util.function.Consumer;
  * @author thomas
  *
  */
-public abstract class Command<T> {
-	private Consumer<T> callback ;
-	
-	public Command(Consumer<T> callback) {
-		this.callback = callback ;
-	}
-	
+public abstract class Command {
+
 	public abstract void execute() ;
-	public void executeCallback(T arg) {
-		callback.accept(arg);
-	}
+
 }

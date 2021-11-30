@@ -11,21 +11,21 @@ import junit.framework.TestCase;
 public class EntityTest extends TestCase {
 	public void testShowRoomClassical() throws Exception {
 		List<OpenDate> dates = new LinkedList<>() ;
-		ShowRoom r = new ShowRoom(dates, 150) ;
+		new ShowRoom(dates, 150);
 		for (int i = 1 ; i < 31 ; i++) {
 			dates.add(new OpenDate(2022, 10, i, 8)) ;
 		}
-		r = new ShowRoom(dates, 150) ;
+		new ShowRoom(dates, 150);
 	}
 	public void testShowRoomInvalidDates() throws Exception {
 		List<OpenDate> dates = new LinkedList<>() ;
-		ShowRoom r = new ShowRoom(dates, 150) ;
+		new ShowRoom(dates, 150);
 		for (int i = 1 ; i < 31 ; i++) {
 			dates.add(new OpenDate(2022, 10, i, 8)) ;
 			dates.add(new OpenDate(2022, 10, i, 14)) ;
 		}
 		try {
-			r = new ShowRoom(dates, 150) ;
+			new ShowRoom(dates, 150);
 			fail("IllegalArgumentException not thrown with show room with same dates multiple times") ;
 		} catch (IllegalArgumentException e) {
 			

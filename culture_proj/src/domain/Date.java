@@ -6,7 +6,7 @@ package domain;
  * @author thomas
  *
  */
-public class Date implements Comparable {
+public class Date implements Comparable<Date> {
 	private final int year ;
 	private final int month ;
 	private final int day ;
@@ -62,12 +62,9 @@ public class Date implements Comparable {
 		Date d = (Date) o ;
 		return d.getDay() == getDay() && d.getMonth() == getMonth() && d.getYear() == getYear() ;
 	}
+
 	@Override
-	public int compareTo(Object o) {
-		if (o == null || getClass() != o.getClass()) {
-			return 0 ;
-		}
-		Date d = (Date) o ;
+	public int compareTo(Date d) {
 		if (getYear() < d.getYear()) {
 			return -1 ;
 		} else if (getYear() > d.getYear()) {
@@ -86,7 +83,6 @@ public class Date implements Comparable {
 				return 0 ;
 			}
 		}
-		
 	}
 
 }
