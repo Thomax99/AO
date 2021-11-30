@@ -7,8 +7,8 @@ package application;
  * @author thomas
  *
  */
-public abstract class Command {
-
+public abstract class Command extends CQRS {
 	public abstract void execute() ;
+
 
 }

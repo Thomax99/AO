@@ -6,6 +6,6 @@ package application;
  * @author thomas
  *
  */
-public interface Query<T> {
-	public T execute() ;
+public abstract class Query<T> extends CQRS {
+	public abstract T execute() ;
 }

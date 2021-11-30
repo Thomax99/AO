@@ -74,7 +74,11 @@ public class ShowRoom {
 		if (!events.containsKey(d) || events.get(d) != null) {
 			throw new RuntimeException("Error : there is already an event at this date or the showroom is not opened at this date") ;
 		}
+		if (leavingCapacity.get(d) < evt.getPlaceNumber()) {
+			throw new RuntimeException("Error : impossible to put this event : not enough place") ;
+		}
 		events.put(d, evt) ;
+		leavingCapacity.put(d, evt.getPlaceNumber()) ;
 	}
 	public List<Event> getEvents() {
 		List<Event> backList = new LinkedList<>() ;
