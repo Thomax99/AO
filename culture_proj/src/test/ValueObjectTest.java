@@ -110,7 +110,7 @@ public class ValueObjectTest extends TestCase {
 		Drama t = new Drama(d.getYear(), d.getMonth(), d.getDay(), d2.getYear(), d2.getMonth(), d2.getDay(), n.getName(), 1000) ;
 		assertEquals(d, t.getStartDate()) ;
 		assertEquals(d2, t.getEndDate()) ;
-		assertEquals(n, t.getArtistName()) ;
+		assertEquals(n, t.getTitleName()) ;
 		assertEquals(1000, t.getPlaceNumber()) ;
 		try {
 			t = new Drama(d2.getYear(), d2.getMonth(), d2.getDay(), d.getYear(), d.getMonth(), d.getDay(), n.getName(), 1000) ;

@@ -21,7 +21,7 @@ public class Drama extends Event {
 	public Date getEndDate() {
 		return endDate ; // we can return it directly because this is well encapsulated
 	}
-	public Name getArtistName() {
+	public Name getTitleName() {
 		return titleName ;
 	}
 }
