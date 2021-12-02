@@ -34,7 +34,7 @@ public class Controller  implements Observer  {
 
 		Scene scene = new Scene(root, 450, 250);
 
-		primaryStage.setTitle("JavaFX Open a new Window (o7planning.org)");
+		primaryStage.setTitle("Plannificateur ...");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
