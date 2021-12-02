@@ -49,7 +49,7 @@ public class View {
 		}
 		for (ShowRoom room : showrooms) {
 				List<ModelEvent> evts = new LinkedList<>() ;
-				room.getEvents().forEach(evt-> {
+				for (Event evt : room.getEvents()) {
 					ModelEvent md = null ;
 					
 					if (evt instanceof Drama) { // DEGUEULASSE : il faut faire des ModelEvents generiques je pense
@@ -64,7 +64,8 @@ public class View {
 								c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName()) ;
 					}
 					evts.add(md) ;
-				});
+				}
+				System.err.println("here") ;
 				ModelShowroom r = new ModelShowroom(room.getCapacity(), evts, room.getId()) ;
 				ShowRoomView s = new ShowRoomView(r, mod -> System.err.println("touch on " + mod.getCorrespondingId())) ;
 				s.setTranslateX(xPos);

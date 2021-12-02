@@ -82,11 +82,11 @@ public class ShowRoom {
 	}
 	public List<Event> getEvents() {
 		List<Event> backList = new LinkedList<>() ;
-		events.keySet().forEach(k -> {
-			if (k != null) {
+		for(OpenDate k : events.keySet()) {
+			if (events.get(k) != null) {
 				backList.add(events.get(k)) ;
 			}
-		});
+		}
 		return backList ;
 	}
 	public Event getEvenByDate(OpenDate d) {
