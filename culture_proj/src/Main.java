@@ -79,6 +79,7 @@ public class Main extends Application {
 		CQRS.setCityService(service);
 		
 		Controller c = new Controller(bag, city.getId(), primaryStage) ;
+		service.addObserver(c);
 		
 	}
 }

@@ -11,6 +11,7 @@ import user.model.ModelEvent;
 
 public class EventView extends Pane {
 	private static Font fNormal = new Font("Arial", 10), fSelected = new Font("Arial", 15) ;
+	private boolean isSelected = false ;
 	public EventView(ModelEvent correspEvent, Consumer<ModelEvent> callOnClick) {
 		super() ;
 		Text t = new Text("Évenement : " + correspEvent.getName() + " du " + correspEvent.getStartDay() +"/"+correspEvent.getStartMonth()+"/"+
@@ -22,7 +23,12 @@ public class EventView extends Pane {
 
 			@Override
 			public void handle(MouseEvent event) {
-				t.setFont(fSelected);
+				if (isSelected) {
+					t.setFont(fNormal);
+				} else {
+					t.setFont(fSelected);
+				}
+				isSelected = !isSelected ;
 				callOnClick.accept(correspEvent) ; // TODO
 			}
 		});

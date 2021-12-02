@@ -15,7 +15,6 @@ public class ShowRoomView extends Pane {
 		for (String str : model.getStringRepresentation()) {
 			rpz += (str+"\n") ;
 		}
-		System.err.println(rpz) ;
 		Text t = new Text(rpz) ;
 		getChildren().add(t) ;
 		setOnMouseClicked(new EventHandler<MouseEvent>() {

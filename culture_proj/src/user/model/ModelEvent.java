@@ -8,7 +8,8 @@ package user.model;
 public class ModelEvent {
 	private final int startYear, startMonth, startDay, endYear, endMonth, endDay, nbPlaces ;
 	private final String name ;
-	public ModelEvent(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int nbPlaces, String name) {
+	private final int id ;
+	public ModelEvent(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int nbPlaces, String name, int id) {
 		this.startYear = startYear ;
 		this.startDay = startDay ;
 		this.startMonth = startMonth ;
@@ -17,6 +18,7 @@ public class ModelEvent {
 		this.endDay = endDay ;
 		this.nbPlaces = nbPlaces ;
 		this.name = name ;
+		this.id = id ;
 	}
 	public int getStartYear() {
 		return startYear;
@@ -41,5 +43,8 @@ public class ModelEvent {
 	}
 	public String getName() {
 		return name;
+	}
+	public int getId() {
+		return id;
 	}
 }

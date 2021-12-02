@@ -24,4 +24,5 @@ public class Drama extends Event {
 	public Name getTitleName() {
 		return titleName ;
 	}
+
 }

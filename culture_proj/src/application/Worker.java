@@ -10,13 +10,7 @@ public class Worker extends Thread {
 	}
 	
 	public void run() {
-		System.err.println("Attention : il faut changer le worker ...") ;
-	    Scanner sc = new Scanner(System.in);
 		while (true) {
-			String s = sc.nextLine() ;
-			if (s.equals("Q")) {
-				break ;
-			}
 			while (bag.isEmpty()) ;
 			Command c = bag.popCommand() ;
 			c.execute();
