@@ -15,7 +15,7 @@ public class ShowRoom {
 	private static int globalId = 0 ;
 	private final int id ;
 	private int capacity ;
-	private final Map<OpenDate, Event> events ;
+	private final Map<Event, List<OpenDate>> programmatedEvents ;
 	private final Map<Date, OpenDate> opendates ;
 	private final Map<OpenDate, Integer> leavingCapacity ;
 	public ShowRoom(List<OpenDate>openDates, int capacity) {
@@ -23,7 +23,7 @@ public class ShowRoom {
 		if (capacity < 0) {
 			throw new IllegalArgumentException("capacity cannot be < 0") ;
 		}
-		events = new TreeMap<>() ;
+		programmatedEvents = new TreeMap<>() ;
 		this.capacity = capacity ;
 		leavingCapacity = new TreeMap<>() ;
 		opendates = new TreeMap<>() ;
@@ -36,13 +36,9 @@ public class ShowRoom {
 					throw new IllegalArgumentException("Two openDates equals on the ShowRoom ...") ;
 				}
 			}
-			System.err.println("Le " +openDates.get(i).getOpenDay().getDay()+"/"+openDates.get(i).getOpenDay().getMonth()+"/"+openDates.get(i).getOpenDay().getYear()+" a " + openDates.get(i).getOpenHour()) ;
-
-			events.put(openDates.get(i), null) ;
 			leavingCapacity.put(openDates.get(i), capacity) ;
 			opendates.put(d1, openDates.get(i)) ;
 		}
-		System.err.println("\n\n") ;
 	}
 	public int getCapacity() {
 		return capacity;
@@ -56,10 +52,8 @@ public class ShowRoom {
 	 * @return -1 if it is not open, the hour else
 	 */
 	public int isOpened(Date d) {
-		for (OpenDate od : events.keySet()) {
-			if (od.getOpenDay().equals(d)) {
-				return od.getOpenHour() ;
-			}
+		if (opendates.get(d) != null) {
+			return opendates.get(d).getOpenHour() ;
 		}
 		return -1 ;
 	}
@@ -78,21 +72,22 @@ public class ShowRoom {
 		return false ;
 	}
 	public void addEvent(Event evt, List<Date> dates) {
+		List<OpenDate> pDates = new LinkedList<>() ;
+		System.err.println("TODO : trouver un moyen de recuperer la liste de dates et pas juste la date du debut") ;
+		
 		for (Date d : dates) {
 			if (!opendates.containsKey(d)) { 
 				throw new RuntimeException("Error : the showroom is not opened at this date") ;
 			}
 			OpenDate od = opendates.get(d) ;
-			if (events.get(od) != null) {
-				throw new RuntimeException("Error : there is already an event at this date") ;
-			}
 			if (leavingCapacity.get(od) < evt.getPlaceNumber()) {
 				throw new RuntimeException("Error : impossible to put this event : not enough place") ;
 			}
-			events.put(od, evt) ;
+			pDates.add(od) ;
 			opendates.remove(d) ;
 			leavingCapacity.put(od, evt.getPlaceNumber()) ;
 		}
+		programmatedEvents.put(evt, pDates) ;
 	}
 	public void addEvent(Drama dr) {
 		addEvent(dr, dr.getStartDate().getDatesInInterval(dr.getEndDate())) ;
@@ -104,18 +99,10 @@ public class ShowRoom {
 		addEvent(c, dates) ;
 	}
 	public List<Event> getEvents() {
-		List<Event> backList = new LinkedList<>() ;
-		for(OpenDate k : events.keySet()) {
-			if (events.get(k) != null) {
-				backList.add(events.get(k)) ;
-			}
-		}
+		List<Event> backList = new LinkedList<>(programmatedEvents.keySet()) ;
 		return backList ;
 	}
-	public Event getEvenByDate(OpenDate d) {
-		if (!events.containsKey(d)) {
-			throw new RuntimeException("Error : the showroom is not opened") ;
-		}
-		return events.get(d) ;
+	public List<OpenDate> getDatesByEvent(Event evt) {
+		return programmatedEvents.get(evt) ;
 	}
 }

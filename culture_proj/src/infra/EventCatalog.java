@@ -1,5 +1,6 @@
 package infra;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,5 +21,26 @@ public class EventCatalog {
 	}
 	public List<Drama> getDramas() {
 		return new LinkedList<>(dramas) ;
+	}
+
+	public void removeConcert(Concert c) {
+		Iterator<Concert> it = concerts.iterator() ;
+		while (it.hasNext()) {
+			Concert conc = it.next() ;
+			if (conc.equals(c)) {
+				it.remove();
+				break ;
+			}
+		}
+	}
+	public void removeDrama(Drama d) {
+		Iterator<Drama> it = dramas.iterator() ;
+		while (it.hasNext()) {
+			Drama dr = it.next() ;
+			if (dr.equals(d)) {
+				it.remove();
+				break ;
+			}
+		}
 	}
 }

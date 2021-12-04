@@ -72,6 +72,10 @@ public class CityService extends Observable {
 		if (!contain) {
 			throw new RuntimeException("showroom doesn't exist") ;
 		}
+		if (conc != null)
+			events.removeConcert(conc);
+		else
+			events.removeDrama(d);
         setChanged();
 		this.notifyObservers();
 	}

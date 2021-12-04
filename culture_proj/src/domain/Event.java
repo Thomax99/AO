@@ -5,7 +5,7 @@ package domain;
  * @author thomas
  *
  */
-public abstract class Event {
+public abstract class Event implements Comparable<Event> {
 	private final int placeNumber ;
 	private static int globalRef = 0;
 	private final int ref ;
@@ -21,6 +21,10 @@ public abstract class Event {
 	}
 	public int getRef() {
 		return ref;
+	}
+	@Override
+	public int compareTo(Event o) {
+		return o.getRef() - getRef() ;
 	}
 
 }

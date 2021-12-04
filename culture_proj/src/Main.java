@@ -42,7 +42,7 @@ public class Main extends Application {
 		concerts.add(new Concert(2022, 5, 13, "Les Indiens", 12)) ;
 		concerts.add(new Concert(2022, 5, 14, "ZenBamboo", 40)) ;
 		concerts.add(new Concert(2022, 5, 14, "WD-40", 800)) ;
-		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Séville", 5)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 5, 25, "Le barbier de Séville", 5)) ;
 		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Kaboul", 500)) ;
 		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Paris", 60)) ;
 		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Alger", 200)) ;
@@ -54,8 +54,12 @@ public class Main extends Application {
 		EventCatalog catalog = new EventCatalog(concerts, dramas) ;
 		
 		List<OpenDate> dates = new LinkedList<>() ;
-		for (int i = 1 ; i < 20 ; i++) {
+		for (int i = 1 ; i < 31 ; i++) {
 			dates.add(new OpenDate(2022, 5, i, 8)) ;
+			dates.add(new OpenDate(2022, 6, i, 8)) ;
+			dates.add(new OpenDate(2022, 7, i, 8)) ;
+			dates.add(new OpenDate(2022, 8, i, 8)) ;
+
 		}
 		
 		ShowRoom r1 = new ShowRoom(dates, 150) ;

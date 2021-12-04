@@ -94,15 +94,16 @@ public class Date implements Comparable<Date> {
 	 * @see the given date has to be >= to the end date
 	 */
 	public List<Date> getDatesInInterval(Date toDate) {
+		System.err.println("call") ;
 		List<Date> dates = new LinkedList<>() ;
-		if (compareTo(toDate) < 0) {
+		if (compareTo(toDate) > 0) {
 			throw new RuntimeException("Error : the given date is smaller than the date") ;
 		}
 		int currentYear = getYear(), currentMonth = getMonth(), currentDay = getDay() ;
-		while (currentYear <= toDate.getYear() && currentMonth <= toDate.getMonth() && currentDay <= toDate.getMonth()) {
+		while (currentYear < toDate.getYear() || (currentYear == toDate.getYear() && currentMonth < toDate.getMonth() || (currentMonth == toDate.getMonth() && currentDay <= toDate.getDay()))) {
 			dates.add(new Date(currentYear, currentMonth, currentDay)) ;
 			currentDay ++ ;
-			if (currentDay > dayNumberByMonth[currentMonth]) {
+			if (currentDay > dayNumberByMonth[currentMonth-1]) {
 				if (currentMonth == 2) {
 					//fevrier : carefullish
 					boolean isLeap = currentYear % 4 == 0 && (currentYear % 100 != 0 || currentYear % 400 == 0) ;
