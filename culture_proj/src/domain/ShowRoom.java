@@ -15,6 +15,7 @@ public class ShowRoom {
 	private final int id ;
 	private int capacity ;
 	private final Map<OpenDate, Event> events ;
+	private final Map<Date, OpenDate> opendates ;
 	private final Map<OpenDate, Integer> leavingCapacity ;
 	public ShowRoom(List<OpenDate>openDates, int capacity) {
 		this.id = globalId ++ ;
@@ -24,6 +25,7 @@ public class ShowRoom {
 		events = new TreeMap<>() ;
 		this.capacity = capacity ;
 		leavingCapacity = new TreeMap<>() ;
+		opendates = new TreeMap<>() ;
 		// pour chaque element, on regarde tous les elements pour voir si il y a egalite entre les jours et si oui on throw un illegal argument
 		for(int i = 0 ; i < openDates.size() ; i++) {
 			Date d1 = openDates.get(i).getOpenDay() ;
@@ -33,9 +35,13 @@ public class ShowRoom {
 					throw new IllegalArgumentException("Two openDates equals on the ShowRoom ...") ;
 				}
 			}
+			System.err.println("Le " +openDates.get(i).getOpenDay().getDay()+"/"+openDates.get(i).getOpenDay().getMonth()+"/"+openDates.get(i).getOpenDay().getYear()+" a " + openDates.get(i).getOpenHour()) ;
+
 			events.put(openDates.get(i), null) ;
 			leavingCapacity.put(openDates.get(i), capacity) ;
+			opendates.put(d1, openDates.get(i)) ;
 		}
+		System.err.println("\n\n") ;
 	}
 	public int getCapacity() {
 		return capacity;
@@ -70,15 +76,29 @@ public class ShowRoom {
 		}
 		return false ;
 	}
-	public void addEvent(Event evt, OpenDate d) {
-		if (!events.containsKey(d) || events.get(d) != null) {
-			throw new RuntimeException("Error : there is already an event at this date or the showroom is not opened at this date") ;
+	public void addEvent(Event evt) {
+		Date d = null ;
+		if (evt instanceof Concert) {
+			Concert c = (Concert) evt ;
+			d = new Date(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay()) ;
+		} else {
+			Drama dr = (Drama) evt ;
+			d = new Date(dr.getStartDate().getYear(), dr.getStartDate().getMonth(), dr.getStartDate().getDay()) ;
 		}
-		if (leavingCapacity.get(d) < evt.getPlaceNumber()) {
+		System.err.println("todo : faire un addConcert et un addDrama different") ;
+		
+		if (!opendates.containsKey(d)) { 
+			throw new RuntimeException("Error : the showroom is not opened at this date") ;
+		}
+		OpenDate od = opendates.get(d) ;
+		if (events.get(od) != null) {
+			throw new RuntimeException("Error : there is already an event at this date") ;
+		}
+		if (leavingCapacity.get(od) < evt.getPlaceNumber()) {
 			throw new RuntimeException("Error : impossible to put this event : not enough place") ;
 		}
-		events.put(d, evt) ;
-		leavingCapacity.put(d, evt.getPlaceNumber()) ;
+		events.put(od, evt) ;
+		leavingCapacity.put(od, evt.getPlaceNumber()) ;
 	}
 	public List<Event> getEvents() {
 		List<Event> backList = new LinkedList<>() ;

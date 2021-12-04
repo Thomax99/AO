@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import domain.OpenDate;
 import javafx.scene.layout.Pane;
 
 /**
@@ -15,18 +16,25 @@ public class ModelShowroom {
 	private final int capacity ;
 	private final int correspondingId ;
 	private final List<ModelEvent> events ;
-	public ModelShowroom(int capacity, List<ModelEvent> events, int id) {
+	private final List<OpenDate> dates ;
+	public ModelShowroom(int capacity, List<ModelEvent> events, List<OpenDate> dates, int id) {
 		this.capacity = capacity ;
 		this.events = events ;
 		this.correspondingId = id ;
+		this.dates = dates ;
 	}
 	public int getCapacity() {
 		return capacity ;
 	}
 	public List<String> getStringRepresentation() {
 		List<String> output = new ArrayList<>() ;
+		output.add("Évenements disponibles :") ;
 		for (ModelEvent ev : events) {
 			output.add(ev.getName() + " le " + ev.getStartDay() +"/"+ev.getStartMonth()+"/"+ev.getEndYear()) ;
+		}
+		output.add("Dates disponibles : ") ;
+		for (OpenDate d : dates) {
+			output.add(d.getOpenDay().getDay() +"/" + d.getOpenDay().getMonth()+"/"+d.getOpenDay().getYear() + " à " + d.getOpenHour()) ;
 		}
 		return output ;
 	}

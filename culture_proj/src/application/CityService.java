@@ -26,7 +26,7 @@ public class CityService extends Observable {
 		}
 		return repo.findCityById(cityId).getShowrooms() ;
 	}
-	public void addEvent(int cityId, int showRoomId, int eventRef, OpenDate d) {
+	public void addEvent(int cityId, int showRoomId, int eventRef) {
 		if (repo.findCityById(cityId) == null) {
 			throw new RuntimeException("id not contained") ;
 		}
@@ -44,13 +44,16 @@ public class CityService extends Observable {
 		boolean contain = false ;
 		for (ShowRoom showroom : city.getShowrooms()) {
 			if (showroom.getId() == showRoomId) {
-				showroom.addEvent(evt, d);
+				showroom.addEvent(evt);
 				contain = true ;
 			}
 		}
 		if (!contain) {
 			throw new RuntimeException("showroom doesn't exist") ;
 		}
+		System.err.println("here") ;
+        setChanged();
+
 		this.notifyObservers();
 	}
 }

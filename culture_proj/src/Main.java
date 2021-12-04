@@ -53,7 +53,7 @@ public class Main extends Application {
 		EventCatalog catalog = new EventCatalog(events) ;
 		
 		List<OpenDate> dates = new LinkedList<>() ;
-		for (int i = 1 ; i < 10 ; i++) {
+		for (int i = 1 ; i < 20 ; i++) {
 			dates.add(new OpenDate(2022, 5, i, 8)) ;
 		}
 		

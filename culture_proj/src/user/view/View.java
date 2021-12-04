@@ -69,11 +69,12 @@ public class View {
 					}
 					evts.add(md) ;
 				}
-				ModelShowroom r = new ModelShowroom(room.getCapacity(), evts, room.getId()) ;
+				
+				ModelShowroom r = new ModelShowroom(room.getCapacity(), evts,room.getOpenDates(), room.getId()) ;
 				ShowRoomView s = new ShowRoomView(r, callOnShowroomClick) ;
 				s.setTranslateX(xPos);
 				s.setTranslateY(yPos);
-				yPos+=40 ;
+				yPos+=270 ;
 				top.getChildren().add(s) ;
 			}
 		rootPane.getChildren().add(top) ;
