@@ -25,14 +25,13 @@ public class Model {
 				ModelEvent mod = null ;
 				if (ev instanceof Drama) { // DEGUEULASSE : il faut faire des ModelEvents generiques je pense
 					Drama d = (Drama) ev ;
-					mod = new ModelEvent(d.getStartDate().getYear(), d.getStartDate().getMonth(), d.getStartDate().getDay(),
+					mod = new ModelDrama(d.getStartDate().getYear(), d.getStartDate().getMonth(), d.getStartDate().getDay(),
 							d.getEndDate().getYear(), d.getEndDate().getMonth(), d.getEndDate().getDay(),d.getPlaceNumber(),  d.getTitleName().getName(), d.getRef()) ;
 					
 				
 				} else if (ev instanceof Concert) {
 					Concert c = (Concert) ev ;
-					mod = new ModelEvent(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(),
-							c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName(), c.getRef()) ;
+					mod = new ModelConcert(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName(), c.getRef()) ;
 				}
 				eventsOfShowroom.add(mod) ;
 			}
@@ -43,14 +42,13 @@ public class Model {
 			ModelEvent mod = null ;
 			if (evt instanceof Drama) { // DEGUEULASSE : il faut faire des ModelEvents generiques je pense
 				Drama d = (Drama) evt ;
-				mod = new ModelEvent(d.getStartDate().getYear(), d.getStartDate().getMonth(), d.getStartDate().getDay(),
+				mod = new ModelDrama(d.getStartDate().getYear(), d.getStartDate().getMonth(), d.getStartDate().getDay(),
 						d.getEndDate().getYear(), d.getEndDate().getMonth(), d.getEndDate().getDay(),d.getPlaceNumber(),  d.getTitleName().getName(), d.getRef()) ;
 				
 			
 			} else if (evt instanceof Concert) {
 				Concert c = (Concert) evt ;
-				mod = new ModelEvent(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(),
-						c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName(), c.getRef()) ;
+				mod = new ModelConcert(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName(), c.getRef()) ;
 			}
 			events.add(mod) ;
 		}

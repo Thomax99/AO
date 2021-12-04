@@ -14,9 +14,7 @@ public class EventView extends Pane {
 	private boolean isSelected = false ;
 	public EventView(ModelEvent correspEvent, Consumer<ModelEvent> callOnClick) {
 		super() ;
-		Text t = new Text("Évenement : " + correspEvent.getName() + " du " + correspEvent.getStartDay() +"/"+correspEvent.getStartMonth()+"/"+
-						correspEvent.getStartYear()+ " au " + correspEvent.getEndDay() +"/"+correspEvent.getEndMonth()+"/"+
-								correspEvent.getEndYear()+" avec "+ correspEvent.getNbPlaces() +" places") ;
+		Text t = new Text("Évenement : " + correspEvent.toString() + " avec "+ correspEvent.getNbPlaces() +" places") ;
 		getChildren().add(t) ;
 		t.setFont(fNormal);
 		setOnMouseClicked(new EventHandler<MouseEvent>() {

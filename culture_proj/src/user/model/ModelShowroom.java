@@ -30,7 +30,7 @@ public class ModelShowroom {
 		List<String> output = new ArrayList<>() ;
 		output.add("Évenements disponibles :") ;
 		for (ModelEvent ev : events) {
-			output.add(ev.getName() + " le " + ev.getStartDay() +"/"+ev.getStartMonth()+"/"+ev.getEndYear()) ;
+			output.add(ev.toString()) ;
 		}
 		output.add("Dates disponibles : ") ;
 		for (OpenDate d : dates) {

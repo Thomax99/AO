@@ -6,37 +6,25 @@ package user.model;
  *
  */
 public class ModelEvent {
-	private final int startYear, startMonth, startDay, endYear, endMonth, endDay, nbPlaces ;
+	private final int year, month, day, nbPlaces ;
 	private final String name ;
 	private final int id ;
-	public ModelEvent(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int nbPlaces, String name, int id) {
-		this.startYear = startYear ;
-		this.startDay = startDay ;
-		this.startMonth = startMonth ;
-		this.endYear = endYear ;
-		this.endMonth = endMonth ;
-		this.endDay = endDay ;
+	public ModelEvent(int year, int month, int day, int nbPlaces, String name, int id) {
+		this.year = year ;
+		this.month = month ;
+		this.day = day ;
 		this.nbPlaces = nbPlaces ;
 		this.name = name ;
 		this.id = id ;
 	}
-	public int getStartYear() {
-		return startYear;
+	public int getYear() {
+		return year;
 	}
-	public int getStartMonth() {
-		return startMonth;
+	public int getMonth() {
+		return month;
 	}
-	public int getStartDay() {
-		return startDay;
-	}
-	public int getEndYear() {
-		return endYear;
-	}
-	public int getEndMonth() {
-		return endMonth;
-	}
-	public int getEndDay() {
-		return endDay;
+	public int getDay() {
+		return day;
 	}
 	public int getNbPlaces() {
 		return nbPlaces;

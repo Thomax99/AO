@@ -55,6 +55,7 @@ public class Controller  implements Observer  {
 				Command cmd = new CommandAddEvent(cityId, modsr.getCorrespondingId(), id) ;
 				bag.pushCommand(cmd);
 			}
+			selectedEventRefs.clear();
 		}) ;
 		m = new Model() ;
 		update(null) ;
@@ -68,8 +69,6 @@ public class Controller  implements Observer  {
 	public void update(Observable ob, Object arg) {
 		// TODO : update view
 		// on commence par recuperer les differentes valeurs
-		System.err.println("updating 2") ;
-		selectedEventRefs.clear();
 		
 		List<Event> events = new QueryGetEvents().execute() ;
 		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;

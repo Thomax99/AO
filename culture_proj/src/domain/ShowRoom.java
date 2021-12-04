@@ -72,9 +72,7 @@ public class ShowRoom {
 		return false ;
 	}
 	public void addEvent(Event evt, List<Date> dates) {
-		List<OpenDate> pDates = new LinkedList<>() ;
-		System.err.println("TODO : trouver un moyen de recuperer la liste de dates et pas juste la date du debut") ;
-		
+		List<OpenDate> pDates = new LinkedList<>() ;		
 		for (Date d : dates) {
 			if (!opendates.containsKey(d)) { 
 				throw new RuntimeException("Error : the showroom is not opened at this date") ;
