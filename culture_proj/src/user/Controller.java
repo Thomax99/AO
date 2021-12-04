@@ -14,81 +14,70 @@ import application.QueryGetEvents;
 import domain.Concert;
 import domain.Drama;
 import domain.Event;
+import domain.OpenDate;
 import domain.ShowRoom;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import user.model.Model;
 import user.model.ModelEvent;
+import user.model.ModelShowroom;
 import user.view.View;
 
 public class Controller  implements Observer  {
 	private CommandBag bag ;
+	private final View v ;
+	private final Model m ;
 	private final int cityId ;
-	private Map<Integer, ModelEvent> modelsEvent ;
+	private final StackPane root ;
 	private List<Integer> selectedEventRefs ;
 	public Controller(CommandBag bag, int cityId, Stage primaryStage) {
 		this.cityId = cityId ;
 		this.bag = bag ;
 		selectedEventRefs = new LinkedList<>() ;
+		root = new StackPane();
 
-		List<Event> events = new QueryGetEvents().execute() ;
-		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;
-		// TODO Auto-generated method stub
-		modelsEvent = new TreeMap<>() ;
-		for (Event evt : events) {
-			ModelEvent mod = null ;
-			if (evt instanceof Drama) { // DEGUEULASSE : il faut faire des ModelEvents generiques je pense
-				Drama d = (Drama) evt ;
-				mod = new ModelEvent(d.getStartDate().getYear(), d.getStartDate().getMonth(), d.getStartDate().getDay(),
-						d.getEndDate().getYear(), d.getEndDate().getMonth(), d.getEndDate().getDay(),d.getPlaceNumber(),  d.getTitleName().getName(), d.getRef()) ;
-				
-			
-			} else if (evt instanceof Concert) {
-				Concert c = (Concert) evt ;
-				mod = new ModelEvent(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(),
-						c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay(), c.getPlaceNumber(),  c.getArtistName().getName(), c.getRef()) ;
-			}
-			modelsEvent.put(mod.getId(), mod) ;
-		}
+		Scene scene = new Scene(root, 800, 1400);
 
-		StackPane root = new StackPane();
-		View v = new View(events, showrooms, root,  modEvt -> {
+
+		primaryStage.setTitle("Plannificateur ...");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		v = new View(root,  modEvt -> {
 			// on ajoute le modelEventId a la liste des modelEvents
 			if (selectedEventRefs.contains(modEvt.getId())) {
-				selectedEventRefs.remove(modEvt.getId()) ;
+				selectedEventRefs.remove(selectedEventRefs.indexOf(modEvt.getId())) ;
 			} else {
 				selectedEventRefs.add(modEvt.getId()) ;
 			}
 		}, modsr -> {
 			for (Integer id :selectedEventRefs) {
-				ModelEvent ev = modelsEvent.get(id) ;
 				Command cmd = new CommandAddEvent(cityId, modsr.getCorrespondingId(), id) ;
-				System.err.println("trouver un moyen de choisir la date ...") ;
 				bag.pushCommand(cmd);
 			}
 		}) ;
-
-		Scene scene = new Scene(root, 800, 1400);
-
-		primaryStage.setTitle("Plannificateur ...");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		m = new Model() ;
+		update(null) ;
 	}
+
+	public void update(Observable ob) {
+		update(ob, null) ;
+	}
+
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable ob, Object arg) {
 		// TODO : update view
-		System.err.println("updating") ;
-	}
-	public void update(Observable arg0) {
-		// TODO : update view
+		// on commence par recuperer les differentes valeurs
 		System.err.println("updating 2") ;
+		selectedEventRefs.clear();
+		
+		List<Event> events = new QueryGetEvents().execute() ;
+		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;
+		m.update(events, showrooms);
+			
+		// TODO Auto-generated method stub
+		v.update(m.getEvents(), m.getShowrooms());
 	}
-
 	
 
 }

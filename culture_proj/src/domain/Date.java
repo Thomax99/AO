@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Value object which represent a date 
  * A date contains just year, month, day, not hour
@@ -83,6 +86,41 @@ public class Date implements Comparable<Date> {
 				return 0 ;
 			}
 		}
+	}
+	/**
+	 * Return the interval of dates between the current date and the given date
+	 * @param toDate the end of the interval, included
+	 * @return the corresponding list of date
+	 * @see the given date has to be >= to the end date
+	 */
+	public List<Date> getDatesInInterval(Date toDate) {
+		List<Date> dates = new LinkedList<>() ;
+		if (compareTo(toDate) < 0) {
+			throw new RuntimeException("Error : the given date is smaller than the date") ;
+		}
+		int currentYear = getYear(), currentMonth = getMonth(), currentDay = getDay() ;
+		while (currentYear <= toDate.getYear() && currentMonth <= toDate.getMonth() && currentDay <= toDate.getMonth()) {
+			dates.add(new Date(currentYear, currentMonth, currentDay)) ;
+			currentDay ++ ;
+			if (currentDay > dayNumberByMonth[currentMonth]) {
+				if (currentMonth == 2) {
+					//fevrier : carefullish
+					boolean isLeap = currentYear % 4 == 0 && (currentYear % 100 != 0 || currentYear % 400 == 0) ;
+					if (isLeap && currentDay > 29 || currentDay > 28) {
+						currentMonth ++ ;
+						currentDay = 1 ;
+					}
+				} else {
+					currentMonth ++ ;
+					currentDay = 1 ;
+				}
+			}
+			if (currentMonth > 12) {
+				currentMonth = 1 ;
+				currentYear ++ ;
+			}
+		}
+		return dates ;
 	}
 
 }

@@ -35,22 +35,23 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		List<Event> events = new LinkedList<>() ;
-		events.add(new Concert(2022, 5, 13, "Joseph Allard", 600)) ;
-		events.add(new Concert(2022, 5, 13, "La Bolduc", 400)) ;
-		events.add(new Concert(2022, 5, 13, "Les Indiens", 12)) ;
-		events.add(new Concert(2022, 5, 14, "ZenBamboo", 40)) ;
-		events.add(new Concert(2022, 5, 14, "WD-40", 800)) ;
-		events.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Séville", 5)) ;
-		events.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Kaboul", 500)) ;
-		events.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Paris", 60)) ;
-		events.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Alger", 200)) ;
-		events.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Tanger", 20)) ;
-		events.add(new Concert(2022, 6, 10, "Philippe Bruneau", 50)) ;
-		events.add(new Concert(2022, 6, 10, "Les Charbonniers de l'Enfer", 20)) ;
-		events.add(new Concert(2022, 6, 10, "Garolou", 30)) ;
-		events.add(new Concert(2022, 6, 10, "Alfred Montmarquette", 25)) ;
-		EventCatalog catalog = new EventCatalog(events) ;
+		List<Concert> concerts = new LinkedList<>() ;
+		List<Drama> dramas = new LinkedList<>() ;
+		concerts.add(new Concert(2022, 5, 13, "Joseph Allard", 600)) ;
+		concerts.add(new Concert(2022, 5, 13, "La Bolduc", 400)) ;
+		concerts.add(new Concert(2022, 5, 13, "Les Indiens", 12)) ;
+		concerts.add(new Concert(2022, 5, 14, "ZenBamboo", 40)) ;
+		concerts.add(new Concert(2022, 5, 14, "WD-40", 800)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Séville", 5)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Kaboul", 500)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Paris", 60)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Alger", 200)) ;
+		dramas.add(new Drama(2022, 5, 14, 2022, 8, 14, "Le barbier de Tanger", 20)) ;
+		concerts.add(new Concert(2022, 6, 10, "Philippe Bruneau", 50)) ;
+		concerts.add(new Concert(2022, 6, 10, "Les Charbonniers de l'Enfer", 20)) ;
+		concerts.add(new Concert(2022, 6, 10, "Garolou", 30)) ;
+		concerts.add(new Concert(2022, 6, 10, "Alfred Montmarquette", 25)) ;
+		EventCatalog catalog = new EventCatalog(concerts, dramas) ;
 		
 		List<OpenDate> dates = new LinkedList<>() ;
 		for (int i = 1 ; i < 20 ; i++) {

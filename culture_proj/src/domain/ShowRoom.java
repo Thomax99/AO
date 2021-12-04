@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class ShowRoom {
 		return capacity;
 	}
 	public List<OpenDate> getOpenDates() {
-		return new LinkedList<OpenDate>(events.keySet());
+		return new LinkedList<OpenDate>(opendates.values());
 	}
 	/**
 	 * function to know if a showroom is opened at a given date
@@ -76,29 +77,31 @@ public class ShowRoom {
 		}
 		return false ;
 	}
-	public void addEvent(Event evt) {
-		Date d = null ;
-		if (evt instanceof Concert) {
-			Concert c = (Concert) evt ;
-			d = new Date(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay()) ;
-		} else {
-			Drama dr = (Drama) evt ;
-			d = new Date(dr.getStartDate().getYear(), dr.getStartDate().getMonth(), dr.getStartDate().getDay()) ;
+	public void addEvent(Event evt, List<Date> dates) {
+		for (Date d : dates) {
+			if (!opendates.containsKey(d)) { 
+				throw new RuntimeException("Error : the showroom is not opened at this date") ;
+			}
+			OpenDate od = opendates.get(d) ;
+			if (events.get(od) != null) {
+				throw new RuntimeException("Error : there is already an event at this date") ;
+			}
+			if (leavingCapacity.get(od) < evt.getPlaceNumber()) {
+				throw new RuntimeException("Error : impossible to put this event : not enough place") ;
+			}
+			events.put(od, evt) ;
+			opendates.remove(d) ;
+			leavingCapacity.put(od, evt.getPlaceNumber()) ;
 		}
-		System.err.println("todo : faire un addConcert et un addDrama different") ;
-		
-		if (!opendates.containsKey(d)) { 
-			throw new RuntimeException("Error : the showroom is not opened at this date") ;
-		}
-		OpenDate od = opendates.get(d) ;
-		if (events.get(od) != null) {
-			throw new RuntimeException("Error : there is already an event at this date") ;
-		}
-		if (leavingCapacity.get(od) < evt.getPlaceNumber()) {
-			throw new RuntimeException("Error : impossible to put this event : not enough place") ;
-		}
-		events.put(od, evt) ;
-		leavingCapacity.put(od, evt.getPlaceNumber()) ;
+	}
+	public void addEvent(Drama dr) {
+		addEvent(dr, dr.getStartDate().getDatesInInterval(dr.getEndDate())) ;
+	}
+	public void addEvent(Concert c) {
+		Date d =  new Date(c.getDate().getYear(), c.getDate().getMonth(), c.getDate().getDay()) ;
+		List<Date> dates = new ArrayList<>() ;
+		dates.add(d) ;
+		addEvent(c, dates) ;
 	}
 	public List<Event> getEvents() {
 		List<Event> backList = new LinkedList<>() ;
