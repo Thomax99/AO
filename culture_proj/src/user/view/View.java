@@ -4,12 +4,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.sun.prism.paint.Color;
+
 import domain.Concert;
 import domain.Drama;
 import domain.Event;
 import domain.ShowRoom;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import user.Controller;
 import user.model.ModelConcert;
@@ -79,6 +89,40 @@ public class View {
 				top.getChildren().add(s) ;
 			}
 		rootPane.getChildren().add(top) ;
+	}
+	public void notifyError(String error) {
+		 if (! Platform.isFxApplicationThread()) {
+	         Platform.runLater(() -> notifyError(error));
+	         return;
+	    }
+		Font f = new Font("Arial", 35) ;
+		Text t = new Text(error) ;
+		t.setFont(f);
+
+		StackPane secondaryLayout = new StackPane();
+		secondaryLayout.getChildren().add(t);
+
+		Scene secondScene = new Scene(secondaryLayout, t.getLayoutBounds().getWidth()+30, t.getLayoutBounds().getHeight()*8);
+		
+
+		// New window (Stage)
+		Stage newWindow = new Stage();
+		newWindow.setTitle("Erreur ...");
+		newWindow.setScene(secondScene);
+		Button b = new Button("OK") ;
+		b.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				newWindow.close();
+			}
+		}) ;
+		b.setTranslateY( t.getLayoutBounds().getHeight()*2);
+		secondaryLayout.getChildren().add(b) ;
+
+		// Set position of second window, related to primary window.
+
+		newWindow.show();
 	}
 	
 }

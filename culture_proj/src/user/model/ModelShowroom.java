@@ -33,8 +33,24 @@ public class ModelShowroom {
 			output.add(ev.toString()) ;
 		}
 		output.add("Dates disponibles : ") ;
+		OpenDate startDate = null, endDate = null ;
 		for (OpenDate d : dates) {
-			output.add(d.getOpenDay().getDay() +"/" + d.getOpenDay().getMonth()+"/"+d.getOpenDay().getYear() + " à " + d.getOpenHour()) ;
+			if (startDate == null) {
+				startDate = d ;
+				endDate = d ;
+			} else {
+				if (endDate.next().equals(d)) {
+					endDate = d ;
+				} else {
+					if (startDate.equals(endDate)) {
+						output.add("le" +startDate.getOpenDay().getDay() +"/" + startDate.getOpenDay().getMonth()+"/"+startDate.getOpenDay().getYear() + " à " + startDate.getOpenHour()+" h") ;
+					} else {
+						output.add("Du " + startDate.getOpenDay().getDay() +"/" + startDate.getOpenDay().getMonth()+"/"+startDate.getOpenDay().getYear() +
+								" à " + endDate.getOpenDay().getDay() +"/" + endDate.getOpenDay().getMonth()+"/"+endDate.getOpenDay().getYear() + " à " + startDate.getOpenHour() + " h") ;
+					}
+					startDate = endDate = d ;
+				}
+			}
 		}
 		return output ;
 	}

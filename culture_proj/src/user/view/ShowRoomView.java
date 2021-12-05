@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import user.model.ModelShowroom;
 
@@ -17,6 +18,7 @@ public class ShowRoomView extends Pane {
 			rpz += (str+"\n") ;
 		}
 		t = new Text(rpz) ;
+		t.setFont(new Font("Arial", 15));
 		getChildren().add(t) ;
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 

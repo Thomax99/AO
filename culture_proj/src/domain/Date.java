@@ -16,6 +16,7 @@ public class Date implements Comparable<Date> {
 	private static final int dayNumberByMonth[] = {31, -1, 31, 30, 31,30,31,31,30,31,30,31} ;
 	
 	public Date(int year, int month, int day) {
+
 		this.year = year ;
 		this.day = day ;
 		this.month = month ;
@@ -28,7 +29,8 @@ public class Date implements Comparable<Date> {
 		if (day <= 0) {
 			throw new IllegalArgumentException("The day has to be a strictly positive integer") ;
 		}
-		if (month > 12) {
+		if (month > 12) {		System.err.println(day +"/"+month+"/"+year) ;
+
 			throw new IllegalArgumentException("The month has to be a lower or equals to 12") ;
 		}
 		if (month == 2) {
@@ -122,6 +124,29 @@ public class Date implements Comparable<Date> {
 			}
 		}
 		return dates ;
+	}
+
+	public Date next() {
+		int day = getDay(), month = getMonth(), year = getYear() ;
+		day ++ ;
+		if (day > dayNumberByMonth[month-1]) {
+			if (month == 2) {
+				//fevrier : carefullish
+				boolean isLeap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) ;
+				if (isLeap && day > 29 || day > 28) {
+					month ++ ;
+					day = 1 ;
+				}
+			} else {
+				month ++ ;
+				day = 1 ;
+			}
+		}
+		if (month > 12) {
+			month = 1 ;
+			year ++ ;
+		}
+		return new Date(year, month, day);
 	}
 
 }

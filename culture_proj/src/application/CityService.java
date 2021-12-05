@@ -16,6 +16,7 @@ import infra.EventCatalog;
 public class CityService extends Observable {
 	private Repository repo ;
 	private EventCatalog events ;
+	private String error = null ;
 	public CityService(Repository repo, EventCatalog events) {
 		this.repo = repo ;
 		this.events = events ;
@@ -38,45 +39,54 @@ public class CityService extends Observable {
 		return repo.findCityById(cityId).getShowrooms() ;
 	}
 	public void addEvent(int cityId, int showRoomId, int eventRef) {
-		if (repo.findCityById(cityId) == null) {
-			throw new RuntimeException("id not contained") ;
-		}
-		Concert conc = null ;
-		for (Concert ev : events.getConcerts()) {
-			if (ev.getRef() == eventRef) {
-				conc = ev ;
-				break ;
+		try {
+			if (repo.findCityById(cityId) == null) {
+				throw new RuntimeException("id not contained") ;
 			}
-		}
-		Drama d = null ;
-		for (Drama ev : events.getDramas()) {
-			if (ev.getRef() == eventRef) {
-				d = ev ;
-				break ;
+			Concert conc = null ;
+			for (Concert ev : events.getConcerts()) {
+				if (ev.getRef() == eventRef) {
+					conc = ev ;
+					break ;
+				}
 			}
-		}
-		if (conc == null && d == null) {
-			throw new RuntimeException("evt doesn't exists") ;
-		}
-		City city = repo.findCityById(cityId) ;
-		boolean contain = false ;
-		for (ShowRoom showroom : city.getShowrooms()) {
-			if (showroom.getId() == showRoomId) {
-				if (conc != null)
-					showroom.addEvent(conc);
-				else
-					showroom.addEvent(d);
-				contain = true ;
+			Drama d = null ;
+			for (Drama ev : events.getDramas()) {
+				if (ev.getRef() == eventRef) {
+					d = ev ;
+					break ;
+				}
 			}
+			if (conc == null && d == null) {
+				throw new RuntimeException("evt doesn't exists") ;
+			}
+			City city = repo.findCityById(cityId) ;
+			boolean contain = false ;
+			for (ShowRoom showroom : city.getShowrooms()) {
+				if (showroom.getId() == showRoomId) {
+					if (conc != null)
+						showroom.addEvent(conc);
+					else
+						showroom.addEvent(d);
+					contain = true ;
+				}
+			}
+			if (!contain) {
+				throw new RuntimeException("showroom doesn't exist") ;
+			}
+			if (conc != null)
+				events.removeConcert(conc);
+			else
+				events.removeDrama(d);
+		} catch (Exception e) {
+			error = e.getMessage() ;
 		}
-		if (!contain) {
-			throw new RuntimeException("showroom doesn't exist") ;
-		}
-		if (conc != null)
-			events.removeConcert(conc);
-		else
-			events.removeDrama(d);
         setChanged();
 		this.notifyObservers();
+	}
+	public String getError() {
+		String output = error ;
+		error = null ;
+		return output;
 	}
 }

@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import application.Command;
 import application.CommandAddEvent;
 import application.CommandBag;
+import application.QueryGetError;
 import application.QueryGetEvents;
 import domain.Concert;
 import domain.Drama;
@@ -69,6 +70,11 @@ public class Controller  implements Observer  {
 	public void update(Observable ob, Object arg) {
 		// TODO : update view
 		// on commence par recuperer les differentes valeurs
+		String error = new QueryGetError().execute() ;
+		if (error != null) {
+			v.notifyError(error) ;
+			return ;
+		}
 		
 		List<Event> events = new QueryGetEvents().execute() ;
 		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;

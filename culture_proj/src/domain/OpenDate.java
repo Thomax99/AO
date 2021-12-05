@@ -45,5 +45,9 @@ public class OpenDate implements Comparable<OpenDate> {
 		}
 		return d.getOpenDay().compareTo(getOpenDay()) ;
 	}
+	public OpenDate next() {
+		Date next = getOpenDay().next() ;
+		return new OpenDate(next.getYear(), next.getMonth(), next.getDay(), getOpenHour()) ;
+	}
 
 }
