@@ -5,7 +5,7 @@ package user.model;
  * @author thomas
  *
  */
-public class ModelEvent {
+public abstract class ModelEvent {
 	private final int year, month, day, nbPlaces ;
 	private final String name ;
 	private final int id ;

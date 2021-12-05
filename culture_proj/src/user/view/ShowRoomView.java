@@ -9,13 +9,14 @@ import javafx.scene.text.Text;
 import user.model.ModelShowroom;
 
 public class ShowRoomView extends Pane {
+	private final Text t;
 	public ShowRoomView(ModelShowroom model, Consumer<ModelShowroom> callOnClick) {
 		super() ;
 		String rpz = "Salle a capacité de " +model.getCapacity() +"\n" ;
 		for (String str : model.getStringRepresentation()) {
 			rpz += (str+"\n") ;
 		}
-		Text t = new Text(rpz) ;
+		t = new Text(rpz) ;
 		getChildren().add(t) ;
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -24,6 +25,12 @@ public class ShowRoomView extends Pane {
 				callOnClick.accept(model) ;
 			}
 		});
+	}
+	public double getTextWidth() {
+		return t.getLayoutBounds().getWidth() + 40;
+	}
+	public double getTextHeight() {
+		return t.getLayoutBounds().getHeight() + 50;
 	}
 
 }

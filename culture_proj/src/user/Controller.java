@@ -56,7 +56,7 @@ public class Controller  implements Observer  {
 				bag.pushCommand(cmd);
 			}
 			selectedEventRefs.clear();
-		}) ;
+		}, 800) ;
 		m = new Model() ;
 		update(null) ;
 	}

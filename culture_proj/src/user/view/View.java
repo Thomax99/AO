@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import user.Controller;
+import user.model.ModelConcert;
 import user.model.ModelEvent;
 import user.model.ModelShowroom;
 
@@ -21,10 +22,12 @@ public class View {
 	private Pane rootPane ;
 	private Consumer<ModelEvent> callOnEventClick ;
 	private Consumer<ModelShowroom> callOnShowroomClick ;
-	public View (Pane rootPane, Consumer<ModelEvent> callOnEventClick, Consumer<ModelShowroom> callOnShowroomClick) {
+	private final int width ;
+	public View (Pane rootPane, Consumer<ModelEvent> callOnEventClick, Consumer<ModelShowroom> callOnShowroomClick, int width) {
 		this.rootPane = rootPane ;
 		this.callOnEventClick = callOnEventClick ;
 		this.callOnShowroomClick = callOnShowroomClick ;
+		this.width = width ;
 	}
 	public void update(List<ModelEvent> events, List<ModelShowroom> showrooms) {
 		this.events = events ;
@@ -39,22 +42,44 @@ public class View {
 	    }
 	    this.rootPane.getChildren().clear();
 		Pane top = new Pane() ;
-		int xPos = 10, yPos = 30 ;
+		double xPos = 10, yPos = 30 ;
+		double maxYSize = 0 ;
 		for (ModelEvent evt : events) {
-			EventView e = new EventView(evt, callOnEventClick) ;
+			
+			EventView e = null ;
+			if (evt instanceof ModelConcert)
+				e  = new ConcertView(evt, callOnEventClick) ;
+		    else
+		    	e = new DramaView(evt, callOnEventClick) ;
 			e.setTranslateX(xPos);
 			e.setTranslateY(yPos);
-			yPos +=30 ;
+			maxYSize = Math.max(e.getTextHeight(), maxYSize) ;
+			xPos += e.getTextWidth() ;
+			if (xPos > width) {
+				yPos += maxYSize ;
+				xPos = 10 ;
+				e.setTranslateX(xPos);
+				e.setTranslateY(yPos);
+				xPos += e.getTextWidth() ;
+			}
 			top.getChildren().add(e) ;
 		}
+		xPos = 10 ;
+		yPos +=  maxYSize ;
 		for (ModelShowroom r : showrooms) {
 				ShowRoomView s = new ShowRoomView(r, callOnShowroomClick) ;
 				s.setTranslateX(xPos);
 				s.setTranslateY(yPos);
-				yPos+=270 ;
+				xPos += s.getTextWidth() ;
+				maxYSize = Math.max(s.getTextHeight(), maxYSize) ;
+				if (xPos > width) {
+					xPos = 10 ;
+					yPos += maxYSize ;
+				}
 				top.getChildren().add(s) ;
 			}
 		rootPane.getChildren().add(top) ;
 	}
+	
 }
 
