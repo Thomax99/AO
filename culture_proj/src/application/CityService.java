@@ -95,9 +95,6 @@ public class CityService extends Observable {
 		if (showroom == null)
 			throw new NotExistantShowRoomException(showroomId) ;
 		Event evt = showroom.removeEvent(eventRef) ;
-		if (evt == null) {
-			throw new NotExistantEventException(eventRef) ;
-		}
 		if (evt instanceof Concert) {
 			events.addConcert((Concert)evt) ;
 		} else if (evt instanceof Drama) {
@@ -161,7 +158,7 @@ public class CityService extends Observable {
 	 * - si il reste un drama par exemple qui peut aller un samedi ou dimanche alors qu'il n'y a rien le samedi ou le dimanche mais
 	 *   qu'un concert empêche que le drama se mette
 	 */
-	public void verify(int cityId, int showroomId) {
+	public boolean verify(int cityId, int showroomId) {
 		boolean error = false ;
 		String currentError = verificationMessages.get(cityId)  ;
 		if (currentError == null)
@@ -238,6 +235,7 @@ public class CityService extends Observable {
 		}
         setChanged();
 		this.notifyObservers();
+		return !error ;
 	}
 	public void removeCity() {
 		nbCitiesAttached -- ;		
