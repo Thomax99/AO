@@ -24,6 +24,9 @@ public class City {
 	public void addShowRoom(ShowRoom showroom) {
 		showrooms.put(showroom.getId(), showroom) ;
 	}
+	public ShowRoom getShowroom(int id) {
+		return showrooms.get(id) ;
+	}
 	public List<ShowRoom> getShowrooms() {
 		return new LinkedList<ShowRoom>(showrooms.values()) ;
 	}

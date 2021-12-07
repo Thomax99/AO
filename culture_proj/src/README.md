@@ -1,0 +1,3 @@
+- améliorer l'interface graphique
+- Ajouter la possibilité d'enlever un evenement
+- faire un test à deux fenêtres

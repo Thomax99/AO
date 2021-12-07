@@ -1,24 +1,29 @@
 package user.view;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import user.model.ModelEvent;
+import user.model.ModelShowroom;
 
 public abstract class EventView extends Pane {
 	private static Font fNormal = new Font("Arial", 10), fSelected = Font.font("Arial", FontWeight.BLACK, 10.) ;
 	private boolean isSelected = false ;
 	private Text t ;
 	private final ModelEvent correspEvent ;
-	public EventView(ModelEvent correspEvent, Consumer<ModelEvent> callOnClick) {
+	private ModelShowroom showroomAttached;
+	public EventView(ModelEvent correspEvent, ModelShowroom showroomAttached, BiConsumer<ModelShowroom, ModelEvent> callOnClick) {
+		this(correspEvent, callOnClick) ;
+		this.showroomAttached = showroomAttached ;
+	}
+	public EventView(ModelEvent correspEvent, BiConsumer<ModelShowroom, ModelEvent> callOnClick) {
 		super() ;
+		this.showroomAttached = null ;
 		this.correspEvent = correspEvent ;
 		String representation = getName() + getDate() + getNBPlaces() +" places\n" ;
 		t = new Text(representation) ;
@@ -35,7 +40,7 @@ public abstract class EventView extends Pane {
 					t.setFont(fSelected);
 				}
 				isSelected = !isSelected ;
-				callOnClick.accept(correspEvent) ;
+				callOnClick.accept(showroomAttached, correspEvent) ;
 			}
 		});
 	}

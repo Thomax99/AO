@@ -3,9 +3,12 @@ package test;
 import java.util.LinkedList;
 import java.util.List;
 
-import domain.Date;
+
+import domain.DateUtilitaries;
 import domain.OpenDate;
 import domain.ShowRoom;
+import exceptions.CapacityNegativeException;
+import exceptions.EqualsDatesException;
 import junit.framework.TestCase;
 
 public class EntityTest extends TestCase {
@@ -26,8 +29,8 @@ public class EntityTest extends TestCase {
 		}
 		try {
 			new ShowRoom(dates, 150);
-			fail("IllegalArgumentException not thrown with show room with same dates multiple times") ;
-		} catch (IllegalArgumentException e) {
+			fail("EqualsDatesException not thrown with show room with same dates multiple times") ;
+		} catch (EqualsDatesException e) {
 			
 		}
 	}
@@ -40,8 +43,8 @@ public class EntityTest extends TestCase {
 		r = new ShowRoom(dates, 150) ;
 		try {
 			r = new ShowRoom(dates, -1) ;
-			fail("IllegalArgumentException not thrown with capacity < 0") ;
-		} catch (IllegalArgumentException e) {
+			fail("CapacityNegativeException not thrown with capacity < 0") ;
+		} catch (CapacityNegativeException e) {
 			
 		}
 		r = new ShowRoom(dates, 150) ;
@@ -60,8 +63,8 @@ public class EntityTest extends TestCase {
 				fail("Date not contained on show room") ; 
 			}
 		}
-		assertEquals(r.isOpened(new Date(2022, 10, 4)), 8) ;
-		assertEquals(r.isOpened(new Date(2022, 9, 2)), -1) ;
+		assertEquals(r.getOpenHour(DateUtilitaries.createDate(2022, 10, 4)), 8) ;
+		assertEquals(r.getOpenHour(DateUtilitaries.createDate(2022, 9, 2)), -1) ;
 		OpenDate d = new OpenDate(2022, 10, 4, 8) ;
 		OpenDate d2 = new OpenDate(2022, 10, 4, 3) ;
 

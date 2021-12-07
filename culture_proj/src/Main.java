@@ -3,27 +3,19 @@ import java.util.List;
 
 import application.CQRS;
 import application.CityService;
-import application.Command;
 import application.CommandBag;
 import application.Worker;
 import domain.City;
 import domain.Concert;
 import domain.Drama;
-import domain.Event;
 import domain.OpenDate;
 import domain.Repository;
 import domain.ShowRoom;
 import infra.EventCatalog;
 import infra.RepositoryInMemory;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import user.Controller;
+import user.controller.Controller;
 
 public class Main extends Application {
 
@@ -59,7 +51,6 @@ public class Main extends Application {
 			dates.add(new OpenDate(2022, 6, i, 8)) ;
 			dates.add(new OpenDate(2022, 7, i, 8)) ;
 			dates.add(new OpenDate(2022, 8, i, 8)) ;
-
 		}
 		
 		ShowRoom r1 = new ShowRoom(dates, 150) ;
@@ -79,8 +70,9 @@ public class Main extends Application {
 		CommandBag bag = new CommandBag() ;
 		Worker w = new Worker(bag) ;
 		w.start() ;
-		
-		CityService service = new CityService(repo, catalog) ;
+		List<Worker> workers = new LinkedList<>() ;
+		workers.add(w) ;
+		CityService service = new CityService(repo, catalog, workers) ;
 		CQRS.setCityService(service);
 		
 		Controller c = new Controller(bag, city.getId(), primaryStage) ;

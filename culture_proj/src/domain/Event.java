@@ -1,5 +1,7 @@
 package domain;
 
+import exceptions.NegativePlaceQuantityException;
+
 /**
  * Event class ; represents an event as a value object ; it means something which need a number of places
  * @author thomas
@@ -9,9 +11,9 @@ public abstract class Event implements Comparable<Event> {
 	private final int placeNumber ;
 	private static int globalRef = 0;
 	private final int ref ;
-	public Event(int placeNumber) {
+	public Event(int placeNumber) throws NegativePlaceQuantityException {
 		if (placeNumber <= 0) {
-			throw new IllegalArgumentException("place number has to be > 0") ;
+			throw new NegativePlaceQuantityException() ;
 		}
 		ref = globalRef++ ;
 		this.placeNumber = placeNumber ;

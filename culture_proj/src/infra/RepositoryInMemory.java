@@ -8,9 +8,11 @@ import domain.Repository;
 
 public class RepositoryInMemory implements Repository {
 	private Map<Integer, City> showrooms ;
+	private int nbCities ;
 	
 	public RepositoryInMemory() {
 		showrooms = new TreeMap<>() ;
+		nbCities = 0 ;
 	}
 
 	@Override
@@ -18,6 +20,7 @@ public class RepositoryInMemory implements Repository {
 		if (showrooms.containsKey(city.getId())) {
 			throw new RuntimeException("The repository already contains the given key") ;
 		}
+		nbCities ++ ;
 		showrooms.put(city.getId(), city) ;
 	}
 
@@ -32,6 +35,11 @@ public class RepositoryInMemory implements Repository {
 			throw new RuntimeException("The repository does not contains the given key") ;
 		}
 		showrooms.put(id, cityToUpdate) ;		
+	}
+
+	@Override
+	public int getNumberCities() {
+		return nbCities;
 	}
 
 }

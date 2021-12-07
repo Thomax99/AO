@@ -1,9 +1,7 @@
-package user;
+package application;
 
 import java.util.List;
 
-import application.Query;
-import domain.Event;
 import domain.ShowRoom;
 
 public class QueryGetShowRooms extends Query<List<ShowRoom>> {

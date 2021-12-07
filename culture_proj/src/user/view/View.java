@@ -2,47 +2,46 @@ package user.view;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import com.sun.prism.paint.Color;
 
-import domain.Concert;
-import domain.Drama;
-import domain.Event;
-import domain.ShowRoom;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import user.Controller;
 import user.model.ModelConcert;
+import user.model.ModelDrama;
 import user.model.ModelEvent;
 import user.model.ModelShowroom;
 
 public class View {
-	private List<ModelEvent> events ;
+	private List<ModelConcert> concerts ;
+	private List<ModelDrama> dramas ;
 	private List<ModelShowroom> showrooms ;
 	private Pane rootPane ;
-	private Consumer<ModelEvent> callOnEventClick ;
-	private Consumer<ModelShowroom> callOnShowroomClick ;
+	private BiConsumer<ModelShowroom, ModelEvent> callOnEventClick, callOnEventOfShowroomClick ;
+	private Consumer<ModelShowroom> callOnShowroomClick, callOnVerifClick ;
 	private final int width ;
-	public View (Pane rootPane, Consumer<ModelEvent> callOnEventClick, Consumer<ModelShowroom> callOnShowroomClick, int width) {
+	public View (Pane rootPane, BiConsumer<ModelShowroom, ModelEvent> callOnEventClick, Consumer<ModelShowroom> callOnShowroomClick,
+			Consumer<ModelShowroom> callOnVerifClick, BiConsumer<ModelShowroom, ModelEvent> callOnEventOfShowroomClick, int width) {
 		this.rootPane = rootPane ;
 		this.callOnEventClick = callOnEventClick ;
 		this.callOnShowroomClick = callOnShowroomClick ;
+		this.callOnVerifClick = callOnVerifClick ;
+		this.callOnEventOfShowroomClick = callOnEventOfShowroomClick ;
 		this.width = width ;
 	}
-	public void update(List<ModelEvent> events, List<ModelShowroom> showrooms) {
-		this.events = events ;
-		this.showrooms = showrooms ;
-
+	public void update(List<ModelConcert> concerts, List<ModelDrama> dramas, List<ModelShowroom> showrooms) {
+		this.concerts = new LinkedList<>(concerts) ;
+		this.dramas = new LinkedList<>(dramas) ;
+		this.showrooms = new LinkedList<>(showrooms) ;
 		display() ;
 	}
 	public void display() {
@@ -54,13 +53,25 @@ public class View {
 		Pane top = new Pane() ;
 		double xPos = 10, yPos = 30 ;
 		double maxYSize = 0 ;
-		for (ModelEvent evt : events) {
+		for (ModelConcert evt : concerts) {
 			
-			EventView e = null ;
-			if (evt instanceof ModelConcert)
-				e  = new ConcertView(evt, callOnEventClick) ;
-		    else
-		    	e = new DramaView(evt, callOnEventClick) ;
+			EventView e = new ConcertView(evt, callOnEventClick) ;
+			e.setTranslateX(xPos);
+			e.setTranslateY(yPos);
+			maxYSize = Math.max(e.getTextHeight(), maxYSize) ;
+			xPos += e.getTextWidth() ;
+			if (xPos > width) {
+				yPos += maxYSize ;
+				xPos = 10 ;
+				e.setTranslateX(xPos);
+				e.setTranslateY(yPos);
+				xPos += e.getTextWidth() ;
+			}
+			top.getChildren().add(e) ;
+		}
+		for (ModelDrama evt : dramas) {
+			
+			EventView e = new DramaView(evt, callOnEventClick) ;
 			e.setTranslateX(xPos);
 			e.setTranslateY(yPos);
 			maxYSize = Math.max(e.getTextHeight(), maxYSize) ;
@@ -77,7 +88,7 @@ public class View {
 		xPos = 10 ;
 		yPos +=  maxYSize ;
 		for (ModelShowroom r : showrooms) {
-				ShowRoomView s = new ShowRoomView(r, callOnShowroomClick) ;
+				ShowRoomView s = new ShowRoomView(r, callOnShowroomClick, callOnVerifClick, callOnEventOfShowroomClick) ;
 				s.setTranslateX(xPos);
 				s.setTranslateY(yPos);
 				xPos += s.getTextWidth() ;

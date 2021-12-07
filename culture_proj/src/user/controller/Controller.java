@@ -1,32 +1,33 @@
-package user;
+package user.controller;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.TreeMap;
 
 import application.Command;
 import application.CommandAddEvent;
+import application.CommandAppIsClose;
 import application.CommandBag;
+import application.CommandRemoveEvent;
+import application.CommandVerifShowRoom;
+import application.QueryGetConcerts;
+import application.QueryGetDramas;
 import application.QueryGetError;
-import application.QueryGetEvents;
+import application.QueryGetShowRooms;
+import application.QueryGetVerificationError;
 import domain.Concert;
 import domain.Drama;
-import domain.Event;
-import domain.OpenDate;
 import domain.ShowRoom;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import user.model.Model;
-import user.model.ModelEvent;
-import user.model.ModelShowroom;
 import user.view.View;
 
 public class Controller  implements Observer  {
-	private CommandBag bag ;
 	private final View v ;
 	private final Model m ;
 	private final int cityId ;
@@ -34,7 +35,6 @@ public class Controller  implements Observer  {
 	private List<Integer> selectedEventRefs ;
 	public Controller(CommandBag bag, int cityId, Stage primaryStage) {
 		this.cityId = cityId ;
-		this.bag = bag ;
 		selectedEventRefs = new LinkedList<>() ;
 		root = new StackPane();
 
@@ -44,20 +44,36 @@ public class Controller  implements Observer  {
 		primaryStage.setTitle("Plannificateur ...");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		v = new View(root,  modEvt -> {
+		v = new View(root,  (modSR, modEvt) -> { // click sur un model event disponible au choix
 			// on ajoute le modelEventId a la liste des modelEvents
 			if (selectedEventRefs.contains(modEvt.getId())) {
 				selectedEventRefs.remove(selectedEventRefs.indexOf(modEvt.getId())) ;
 			} else {
 				selectedEventRefs.add(modEvt.getId()) ;
 			}
-		}, modsr -> {
+		}, modsr -> { // click sur une showroom
 			for (Integer id :selectedEventRefs) {
 				Command cmd = new CommandAddEvent(cityId, modsr.getCorrespondingId(), id) ;
 				bag.pushCommand(cmd);
 			}
 			selectedEventRefs.clear();
-		}, 800) ;
+		}, modsr -> { // click sur le bouton verifier d'une showroom
+			Command cmd = new CommandVerifShowRoom(cityId, modsr.getCorrespondingId()) ;
+			bag.pushCommand(cmd);
+		}, (modsr, modev) -> {
+			Command cmd = new CommandRemoveEvent(cityId, modsr.getCorrespondingId(), modev.getId()) ;
+			bag.pushCommand(cmd);
+		}
+			
+		,800) ;
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent ev) {
+					Command cmd = new CommandAppIsClose() ;
+					bag.pushCommand(cmd) ;
+			}
+			
+		});
 		m = new Model() ;
 		update(null) ;
 	}
@@ -68,20 +84,30 @@ public class Controller  implements Observer  {
 
 	@Override
 	public void update(Observable ob, Object arg) {
-		// TODO : update view
-		// on commence par recuperer les differentes valeurs
-		String error = new QueryGetError().execute() ;
+		// on commence par recuperer les differentes erreurs
+		
+		String errorVerif = new QueryGetVerificationError(cityId).execute() ;
+		if (errorVerif != null) {
+			v.notifyError(errorVerif) ;
+			update(ob, arg) ; // on recommence pour vider les erreurs, si besoin
+			return ;
+		}
+	
+		
+		String error = new QueryGetError(cityId).execute() ;
 		if (error != null) {
 			v.notifyError(error) ;
+			update(ob, arg) ; // on recommence pour vider les erreurs, si besoin
 			return ;
 		}
 		
-		List<Event> events = new QueryGetEvents().execute() ;
+		List<Drama> dramas = new QueryGetDramas().execute() ;
+		List<Concert> concerts = new QueryGetConcerts().execute() ;
 		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;
-		m.update(events, showrooms);
+		m.update(dramas, concerts, showrooms);
 			
 		// TODO Auto-generated method stub
-		v.update(m.getEvents(), m.getShowrooms());
+		v.update(m.getConcerts(), m.getDramas(),  m.getShowrooms());
 	}
 	
 

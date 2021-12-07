@@ -1,12 +1,17 @@
 package user.view;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import user.model.ModelConcert;
 import user.model.ModelEvent;
+import user.model.ModelShowroom;
 
 public class ConcertView extends EventView{
-	public ConcertView(ModelEvent correspEvent, Consumer<ModelEvent> callOnClick) {
+	public ConcertView(ModelConcert correspEvent, ModelShowroom showroomAttached, BiConsumer<ModelShowroom, ModelEvent> callOnClick) {
+		super(correspEvent, showroomAttached, callOnClick);
+	}
+
+	public ConcertView(ModelConcert correspEvent, BiConsumer<ModelShowroom, ModelEvent> callOnClick) {
 		super(correspEvent, callOnClick);
 	}
 

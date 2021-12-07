@@ -1,6 +1,5 @@
 package application;
 
-import domain.OpenDate;
 
 public class CommandAddEvent extends Command {
 	private int showRoomId, eventRef, cityId ;

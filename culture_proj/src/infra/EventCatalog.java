@@ -6,7 +6,6 @@ import java.util.List;
 
 import domain.Concert;
 import domain.Drama;
-import domain.Event;
 
 public class EventCatalog {
 	private List<Concert> concerts ;
@@ -42,5 +41,12 @@ public class EventCatalog {
 				break ;
 			}
 		}
+	}
+
+	public void addConcert(Concert evt) {
+		concerts.add(evt) ;
+	}
+	public void addDrama(Drama evt) {
+		dramas.add(evt) ;
 	}
 }
