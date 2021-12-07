@@ -48,7 +48,7 @@ public class OpenDate implements Comparable<OpenDate> {
 			}
 			return 0 ;
 		}
-		return d.getOpenDay().compareTo(getOpenDay()) ;
+		return getOpenDay().compareTo(d.getOpenDay()) ;
 	}
 	public OpenDate next() throws ForbiddenHourException, ForbiddenDateException {
 		Date next = DateUtilitaries.getNextDate(getOpenDay()) ;

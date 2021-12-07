@@ -14,6 +14,7 @@ import domain.Drama;
 import domain.Event;
 import domain.Repository;
 import domain.ShowRoom;
+import exceptions.ForbiddenDateIntervalException;
 import exceptions.MultilangException;
 import exceptions.NotEnoughPlaceException;
 import exceptions.NotExistantCityException;
@@ -104,7 +105,7 @@ public class CityService extends Observable {
 		}
 	}
 	private void _addEvent(int cityId, int showRoomId, int eventRef) throws NotExistantCityException, NotExistantShowRoomException,
-				NotOpenedShowRoomException, NotEnoughPlaceException, NotExistantEventException {
+				NotOpenedShowRoomException, NotEnoughPlaceException, NotExistantEventException, ForbiddenDateIntervalException {
 		if (repo.findCityById(cityId) == null) {
 			throw new NotExistantCityException(cityId) ;
 		}

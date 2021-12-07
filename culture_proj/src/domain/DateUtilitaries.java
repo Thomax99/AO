@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import exceptions.ForbiddenDateException;
+import exceptions.ForbiddenDateIntervalException;
 
 public class DateUtilitaries {
 	private static final int [] dayByNumberInMonth = {31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} ;
@@ -56,10 +57,11 @@ public class DateUtilitaries {
 	}
 	/**
 	 * Return a List of date from startDate to endDate, included
+	 * @throws ForbiddenDateIntervalException 
 	 */
-	public synchronized static List<Date> getDateInInterval(Date startDate, Date endDate) {
+	public synchronized static List<Date> getDateInInterval(Date startDate, Date endDate) throws ForbiddenDateIntervalException {
 		if (startDate.compareTo(endDate) > 0) {
-			throw new RuntimeException("La date de début est plus grande que la date de fin") ;
+			throw new ForbiddenDateIntervalException(startDate, endDate) ;
 		}
 		List<Date> outputList = new LinkedList<>() ;
 		Date curDate = (Date) startDate.clone() ;

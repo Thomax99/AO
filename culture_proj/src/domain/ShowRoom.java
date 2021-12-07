@@ -9,7 +9,9 @@ import java.util.TreeMap;
 
 import exceptions.CapacityNegativeException;
 import exceptions.EqualsDatesException;
+import exceptions.ForbiddenDateIntervalException;
 import exceptions.NotEnoughPlaceException;
+import exceptions.NotExistantEventException;
 import exceptions.NotOpenedShowRoomException;
 
 /**
@@ -37,17 +39,19 @@ public class ShowRoom {
 		leavingCapacity = new TreeMap<>() ;
 		opendates = new TreeMap<>() ;
 		// pour chaque element, on regarde tous les elements pour voir si il y a egalite entre les jours et si oui on throw un illegal argument
-		for(int i = 0 ; i < openDates.size() ; i++) {
-			Date d1 = openDates.get(i).getOpenDay() ;
-			for (int j = i+1 ; j < openDates.size() ; j++) {
-				Date d2 = openDates.get(j).getOpenDay() ;
-				if (d1.equals(d2)) {
-					throw new EqualsDatesException() ;
+		if (openDates != null) {
+			for(int i = 0 ; i < openDates.size() ; i++) {
+				Date d1 = openDates.get(i).getOpenDay() ;
+				for (int j = i+1 ; j < openDates.size() ; j++) {
+					Date d2 = openDates.get(j).getOpenDay() ;
+					if (d1.equals(d2)) {
+						throw new EqualsDatesException() ;
+					}
 				}
+				leavingCapacity.put(openDates.get(i), capacity) ;
+				opendates.put(d1, openDates.get(i)) ;
+				isProgrammated.put(d1, false) ;
 			}
-			leavingCapacity.put(openDates.get(i), capacity) ;
-			opendates.put(d1, openDates.get(i)) ;
-			isProgrammated.put(d1, false) ;
 		}
 	}
 	public int getCapacity() {
@@ -107,7 +111,7 @@ public class ShowRoom {
 		}
 		programmatedEvents.put(evt, pDates) ;
 	}
-	public void addEvent(Drama dr) throws NotOpenedShowRoomException, NotEnoughPlaceException {
+	public void addEvent(Drama dr) throws NotOpenedShowRoomException, NotEnoughPlaceException, ForbiddenDateIntervalException {
 		addEvent(dr, DateUtilitaries.getDateInInterval(dr.getStartDate(), dr.getEndDate())) ;
 	}
 	public void addEvent(Concert c) throws NotOpenedShowRoomException, NotEnoughPlaceException {
@@ -136,7 +140,7 @@ public class ShowRoom {
 		}
 		return null ; // pas sense arriver
 	}
-	public Event removeEvent(int eventRef) {
+	public Event removeEvent(int eventRef) throws NotExistantEventException {
 		Event backEvent = null ;
 		for(Event ev : programmatedEvents.keySet()) {
 			if (ev.getRef() == eventRef) {
@@ -144,14 +148,15 @@ public class ShowRoom {
 				break ;
 			}
 		}
-		if (backEvent != null) {
-			for (OpenDate prog : programmatedEvents.get(backEvent)) {
-				isProgrammated.put(prog.getOpenDay(), false) ;
-				leavingCapacity.put(prog, capacity) ;
-				opendates.put(prog.getOpenDay(), prog) ;
-			}
-			programmatedEvents.remove(backEvent) ;
+		if (backEvent == null) {
+			throw new NotExistantEventException(eventRef) ;
 		}
+		for (OpenDate prog : programmatedEvents.get(backEvent)) {
+			isProgrammated.put(prog.getOpenDay(), false) ;
+			leavingCapacity.put(prog, capacity) ;
+			opendates.put(prog.getOpenDay(), prog) ;
+		}
+		programmatedEvents.remove(backEvent) ;
 		return backEvent;
 	}
 }

@@ -26,7 +26,7 @@ public abstract class Event implements Comparable<Event> {
 	}
 	@Override
 	public int compareTo(Event o) {
-		return o.getRef() - getRef() ;
+		return getRef() - o.getRef() ;
 	}
 
 }
