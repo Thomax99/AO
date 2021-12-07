@@ -3,7 +3,6 @@ package test;
 import java.util.LinkedList;
 import java.util.List;
 
-import application.CQRS;
 import application.CityService;
 import application.CommandBag;
 import application.Worker;
@@ -11,6 +10,7 @@ import domain.City;
 import domain.Concert;
 import domain.Drama;
 import domain.Event;
+import domain.EventCatalog;
 import domain.OpenDate;
 import domain.Repository;
 import domain.ShowRoom;
@@ -20,10 +20,8 @@ import exceptions.NotExistantCityException;
 import exceptions.NotExistantEventException;
 import exceptions.NotExistantShowRoomException;
 import exceptions.NotOpenedShowRoomException;
-import infra.EventCatalog;
 import infra.RepositoryInMemory;
 import junit.framework.TestCase;
-import user.controller.Controller;
 
 public class ServiceTest extends TestCase {
 	public void testCityService() throws Exception {
@@ -46,9 +44,9 @@ public class ServiceTest extends TestCase {
 		
 		ShowRoom r1 = new ShowRoom(dates, 150) ;
 		ShowRoom r2 = new ShowRoom(dates, 120) ;
-		City city2 = new City() ;
+		City city2 = new City(catalog) ;
 
-		City city = new City() ;
+		City city = new City(catalog) ;
 		city.addShowRoom(r1);
 		city.addShowRoom(r2);
 		
@@ -60,14 +58,14 @@ public class ServiceTest extends TestCase {
 		CityService service = new CityService(repo, catalog, new LinkedList<>()) ;
 		
 		// test getConcerts
-		List<Concert> concertGets = service.getConcerts() ;
+		List<Concert> concertGets = service.getConcerts(city.getId()) ;
 		for (Concert c : concerts) {
 			assertEquals(concertGets.contains(c), true) ;
 		}
 		assertEquals(concerts.size(), concertGets.size()) ;
 		
 		// test getDramas
-		List<Drama> dramasGet = service.getDramas() ;
+		List<Drama> dramasGet = service.getDramas(city.getId()) ;
 		for (Drama d : dramas) {
 			assertEquals(dramasGet.contains(d), true) ;
 		}
@@ -75,7 +73,7 @@ public class ServiceTest extends TestCase {
 		
 		// test getEvent
 		
-		List<Event> eventsGet = service.getEvents() ;
+		List<Event> eventsGet = service.getEvents(city.getId()) ;
 		
 		for (Concert c : concerts) {
 			assertEquals(eventsGet.contains(c), true) ;
@@ -97,11 +95,11 @@ public class ServiceTest extends TestCase {
 		
 		service.addEvent(city.getId(), r1.getId(), concerts.get(0).getRef()); // concert ok
 		assertEquals(service.getError(city.getId()), null) ;
-		assertEquals(service.getEvents().contains(concerts.get(0)), false) ;
+		assertEquals(service.getEvents(city.getId()).contains(concerts.get(0)), false) ;
 		
 		service.addEvent(city.getId(), r1.getId(), dramas.get(0).getRef()); // drama ok
 		assertEquals(service.getError(city.getId()), null) ;
-		assertEquals(service.getEvents().contains(dramas.get(0)), false) ;
+		assertEquals(service.getEvents(city.getId()).contains(dramas.get(0)), false) ;
 		
 		service.addEvent(city.getId(), r1.getId(), concerts.get(1).getRef()); // concert trop gros
 		assertEquals(service.getError(city.getId()), new NotEnoughPlaceException(r1.getId(), r1.getCapacity(), concerts.get(1).getPlaceNumber()).getMessageFR()) ;
@@ -126,11 +124,11 @@ public class ServiceTest extends TestCase {
 				
 		service.removeEvent(city.getId(), r1.getId(), concerts.get(0).getRef()); // remove concert OK
 		assertEquals(service.getError(city.getId()), null) ;
-		assertEquals(service.getEvents().contains(concerts.get(0)), true) ;
+		assertEquals(service.getEvents(city.getId()).contains(concerts.get(0)), true) ;
 		
 		service.removeEvent(city.getId(), r1.getId(), dramas.get(0).getRef()); // remove drama OK
 		assertEquals(service.getError(city.getId()), null) ;
-		assertEquals(service.getEvents().contains(dramas.get(0)), true) ;
+		assertEquals(service.getEvents(city.getId()).contains(dramas.get(0)), true) ;
 		
 		service.removeEvent(city.getId() + 1, r1.getId(), concerts.get(2).getRef()); // city non existante
 		assertEquals(service.getError(city.getId()+1), new NotExistantCityException(city.getId() + 1).getMessageFR()) ;
@@ -154,7 +152,7 @@ public class ServiceTest extends TestCase {
 		
 		assertEquals(service.verify(city.getId(), r1.getId()), false) ;
 		
-		this.assertNotSame("pas d'erreur dans la vérification de la showroom " + r1.getId(), service.getVerificationError(city.getId()));
+		assertNotSame("pas d'erreur dans la vérification de la showroom " + r1.getId(), service.getVerificationError(city.getId()));
 
 	}
 	

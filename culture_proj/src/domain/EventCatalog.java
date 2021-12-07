@@ -1,12 +1,14 @@
-package infra;
+package domain;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import domain.Concert;
-import domain.Drama;
-
+/**
+ * This class is also an entity object, like a showroom
+ * @author thomas
+ *
+ */
 public class EventCatalog {
 	private List<Concert> concerts ;
 	private List<Drama> dramas ;

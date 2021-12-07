@@ -8,11 +8,12 @@ import application.Worker;
 import domain.City;
 import domain.Concert;
 import domain.Drama;
+import domain.EventCatalog;
 import domain.OpenDate;
 import domain.Repository;
 import domain.ShowRoom;
-import infra.EventCatalog;
 import infra.RepositoryInMemory;
+import infra.RepositoryInXml;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import user.controller.Controller;
@@ -58,13 +59,15 @@ public class Main extends Application {
 		ShowRoom r3 = new ShowRoom(dates, 50) ;
 		ShowRoom r4 = new ShowRoom(dates, 800) ;
 		
-		City city = new City() ;
+		City city = new City(catalog) ;
 		city.addShowRoom(r1);
 		city.addShowRoom(r2);
 		city.addShowRoom(r3);
 		city.addShowRoom(r4);
 		
 		Repository repo = new RepositoryInMemory() ;
+		Repository repoXml = new RepositoryInXml() ;
+		repoXml.save(city); 
 		repo.save(city);
 		
 		CommandBag bag = new CommandBag() ;

@@ -12,6 +12,7 @@ import domain.Concert;
 import domain.DateUtilitaries;
 import domain.Drama;
 import domain.Event;
+import domain.EventCatalog;
 import domain.Repository;
 import domain.ShowRoom;
 import exceptions.ForbiddenDateIntervalException;
@@ -21,11 +22,9 @@ import exceptions.NotExistantCityException;
 import exceptions.NotExistantEventException;
 import exceptions.NotExistantShowRoomException;
 import exceptions.NotOpenedShowRoomException;
-import infra.EventCatalog;
 
 public class CityService extends Observable {
 	private Repository repo ;
-	private EventCatalog events ;
 	private Map<Integer, String> errors ;
 	private Map<Integer, Boolean> hasBeenVerified ;
 	private Map<Integer, String> verificationMessages ;
@@ -34,22 +33,19 @@ public class CityService extends Observable {
 	public CityService(Repository repo, EventCatalog events, List<Worker> workers) {
 		errors = new TreeMap<>() ;
 		this.repo = repo ;
-		this.events = events ;
 		this.nbCitiesAttached = repo.getNumberCities() ;
 		hasBeenVerified = new TreeMap<>() ;
 		verificationMessages = new TreeMap<>() ;
 		this.workers = new LinkedList<>(workers) ;
 	}
-	public List<Concert> getConcerts() {
-		return events.getConcerts() ;
+	public List<Concert> getConcerts(int cityId) {
+		return repo.findCityById(cityId).getConcertsInCatalog() ;
 	}
-	public List<Drama> getDramas() {
-		return events.getDramas() ;
+	public List<Drama> getDramas(int cityId) {
+		return repo.findCityById(cityId).getDramasInCatalog() ;
 	}
-	public List<Event> getEvents() {
-		List<Event> events = new LinkedList<>(getDramas()) ;
-		events.addAll(getConcerts()) ;
-		return events ;
+	public List<Event> getEvents(int cityId) {
+		return repo.findCityById(cityId).getEventsInCatalog() ;
 	}
 	private List<ShowRoom> _getShowRooms(int cityId) throws NotExistantCityException {
 		if (repo.findCityById(cityId) == null) {
@@ -96,9 +92,9 @@ public class CityService extends Observable {
 			throw new NotExistantShowRoomException(showroomId) ;
 		Event evt = showroom.removeEvent(eventRef) ;
 		if (evt instanceof Concert) {
-			events.addConcert((Concert)evt) ;
+			repo.findCityById(cityId).addConcertInCatalog((Concert)evt) ;
 		} else if (evt instanceof Drama) {
-			events.addDrama((Drama)evt) ;
+			repo.findCityById(cityId).addDramaInCatalog((Drama)evt) ;
 		}
 	}
 	private void _addEvent(int cityId, int showRoomId, int eventRef) throws NotExistantCityException, NotExistantShowRoomException,
@@ -107,14 +103,14 @@ public class CityService extends Observable {
 			throw new NotExistantCityException(cityId) ;
 		}
 		Concert conc = null ;
-		for (Concert ev : events.getConcerts()) {
+		for (Concert ev : repo.findCityById(cityId).getConcertsInCatalog()) {
 			if (ev.getRef() == eventRef) {
 				conc = ev ;
 				break ;
 			}
 		}
 		Drama d = null ;
-		for (Drama ev : events.getDramas()) {
+		for (Drama ev : repo.findCityById(cityId).getDramasInCatalog()) {
 			if (ev.getRef() == eventRef) {
 				d = ev ;
 				break ;
@@ -132,9 +128,9 @@ public class CityService extends Observable {
 		else
 			showroom.addEvent(d);
 		if (conc != null)
-			events.removeConcert(conc);
+			repo.findCityById(cityId).removeConcertInCatalog(conc);
 		else
-			events.removeDrama(d);
+			repo.findCityById(cityId).removeDramaInCatalog(d);
 	}
 	public String getError(int cityId) {
 		String output = errors.get(cityId) ;
@@ -172,7 +168,7 @@ public class CityService extends Observable {
 		// si c'est le cas, on met une erreur
 		ShowRoom sr = repo.findCityById(cityId).getShowroom(showroomId) ;
 		
-		for (Concert concDisp : events.getConcerts()) {
+		for (Concert concDisp : getConcerts(cityId)) {
 			if (sr.getCapacity() >= concDisp.getPlaceNumber() && sr.getOpenHour(concDisp.getDate()) != -1) {
 				// la salle est ouverte a cette date et on peut y mettre l'event
 				// il faut regarder si un concert est deja proposee la semaine de concDisp
@@ -200,7 +196,7 @@ public class CityService extends Observable {
 		// si oui, on regarde si sur ces week-end, il y a un event et si il y en a pas, on regarde si
 		// ces evenements peuvent etre mis, ou si il y a un event qui les empeche d'etre la
 		
-		for (Drama dramDisp : events.getDramas()) {
+		for (Drama dramDisp : getDramas(cityId)) {
 			boolean canBePut = true ;
 			boolean isOnWeekEnd = false, blockedByDrama = false ;
 			if (dramDisp.getPlaceNumber() > sr.getCapacity()) {

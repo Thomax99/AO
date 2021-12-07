@@ -101,8 +101,8 @@ public class Controller  implements Observer  {
 			return ;
 		}
 		
-		List<Drama> dramas = new QueryGetDramas().execute() ;
-		List<Concert> concerts = new QueryGetConcerts().execute() ;
+		List<Drama> dramas = new QueryGetDramas(cityId).execute() ;
+		List<Concert> concerts = new QueryGetConcerts(cityId).execute() ;
 		List<ShowRoom> showrooms = new QueryGetShowRooms(cityId).execute() ;
 		m.update(dramas, concerts, showrooms);
 			
