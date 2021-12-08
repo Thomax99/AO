@@ -9,6 +9,22 @@ import exceptions.NegativePlaceQuantityException;
 public class Drama extends Event {
 	private final Date startDate, endDate;
 	private final Name titleName;
+	
+	/**
+	 * For repository
+	 */
+	public Drama(int startYear, int startMonth, int startDay,
+			int endYear, int endMonth, int endDay, String titleName, int placeNumber, int ref)
+					throws NegativePlaceQuantityException, ForbiddenDateIntervalException, ForbiddenDateException {
+		super(placeNumber, ref) ;
+		this.startDate = DateUtilitaries.createDate(startYear, startMonth, startDay) ;
+		this.endDate = DateUtilitaries.createDate(endYear, endMonth, endDay) ;
+		if (this.startDate.after(this.endDate)) {
+			throw new ForbiddenDateIntervalException(this.startDate, this.endDate) ;
+		}
+		this.titleName = new Name(titleName) ;
+	}
+ 
 
 	public Drama(int startYear, int startMonth, int startDay,
 				int endYear, int endMonth, int endDay, String titleName, int placeNumber) throws NegativePlaceQuantityException, ForbiddenDateIntervalException, ForbiddenDateException {

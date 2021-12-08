@@ -15,6 +15,20 @@ public class City {
 	private EventCatalog events ;
 	private final int id ;
 	private static int globalId = 0 ;
+	/**
+	 * For repository
+	 */
+	public City (EventCatalog events, int id) {
+		this.events = events ;
+		showrooms = new TreeMap<>() ;
+		this.id = id ;
+		if (id >= globalId) {
+			globalId = id ;
+			globalId ++ ;
+		}
+		
+	}
+	
 	public City(EventCatalog events) {
 		this.id = globalId++ ;
 		this.events = events ;

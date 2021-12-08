@@ -29,7 +29,6 @@ public class ShowRoom {
 	private final Map<OpenDate, Integer> leavingCapacity ;
 	public ShowRoom(List<OpenDate>openDates, int capacity)
 			throws CapacityNegativeException, EqualsDatesException {
-		this.id = globalId ++ ;
 		if (capacity < 0) {
 			throw new CapacityNegativeException() ;
 		}
@@ -52,6 +51,41 @@ public class ShowRoom {
 				opendates.put(d1, openDates.get(i)) ;
 				isProgrammated.put(d1, false) ;
 			}
+		}
+		this.id = globalId ++ ;
+	}
+	/**
+	 * For repository
+	 */
+	public ShowRoom(List<OpenDate>openDates, int capacity, int id)
+			throws CapacityNegativeException, EqualsDatesException {
+		if (capacity < 0) {
+			throw new CapacityNegativeException() ;
+		}
+		programmatedEvents = new TreeMap<>() ;
+		isProgrammated = new TreeMap<>() ;
+		this.capacity = capacity ;
+		leavingCapacity = new TreeMap<>() ;
+		opendates = new TreeMap<>() ;
+		// pour chaque element, on regarde tous les elements pour voir si il y a egalite entre les jours et si oui on throw un illegal argument
+		if (openDates != null) {
+			for(int i = 0 ; i < openDates.size() ; i++) {
+				Date d1 = openDates.get(i).getOpenDay() ;
+				for (int j = i+1 ; j < openDates.size() ; j++) {
+					Date d2 = openDates.get(j).getOpenDay() ;
+					if (d1.equals(d2)) {
+						throw new EqualsDatesException() ;
+					}
+				}
+				leavingCapacity.put(openDates.get(i), capacity) ;
+				opendates.put(d1, openDates.get(i)) ;
+				isProgrammated.put(d1, false) ;
+			}
+		}
+		this.id = id ;
+		if (id >= globalId) {
+			globalId = id ;
+			globalId ++ ;
 		}
 	}
 	public int getCapacity() {

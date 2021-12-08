@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <City id="0">
   <EventCatalog>
-    <Drama ref="5">
+    <drama ref="5">
       <name>Le barbier de Séville</name>
       <startDate>
         <year>2022</year>
@@ -14,8 +14,8 @@
         <day>25</day>
       </endDate>
       <placeNumber>5</placeNumber>
-    </Drama>
-    <Drama ref="6">
+    </drama>
+    <drama ref="6">
       <name>Le barbier de Kaboul</name>
       <startDate>
         <year>2022</year>
@@ -28,8 +28,8 @@
         <day>14</day>
       </endDate>
       <placeNumber>500</placeNumber>
-    </Drama>
-    <Drama ref="7">
+    </drama>
+    <drama ref="7">
       <name>Le barbier de Paris</name>
       <startDate>
         <year>2022</year>
@@ -42,8 +42,8 @@
         <day>14</day>
       </endDate>
       <placeNumber>60</placeNumber>
-    </Drama>
-    <Drama ref="8">
+    </drama>
+    <drama ref="8">
       <name>Le barbier de Alger</name>
       <startDate>
         <year>2022</year>
@@ -56,8 +56,8 @@
         <day>14</day>
       </endDate>
       <placeNumber>200</placeNumber>
-    </Drama>
-    <Drama ref="9">
+    </drama>
+    <drama ref="9">
       <name>Le barbier de Tanger</name>
       <startDate>
         <year>2022</year>
@@ -70,8 +70,8 @@
         <day>14</day>
       </endDate>
       <placeNumber>20</placeNumber>
-    </Drama>
-    <Concert ref="0">
+    </drama>
+    <concert ref="0">
       <name>Joseph Allard</name>
       <date>
         <year>2022</year>
@@ -79,8 +79,8 @@
         <day>13</day>
       </date>
       <placeNumber>600</placeNumber>
-    </Concert>
-    <Concert ref="1">
+    </concert>
+    <concert ref="1">
       <name>La Bolduc</name>
       <date>
         <year>2022</year>
@@ -88,8 +88,8 @@
         <day>13</day>
       </date>
       <placeNumber>400</placeNumber>
-    </Concert>
-    <Concert ref="2">
+    </concert>
+    <concert ref="2">
       <name>Les Indiens</name>
       <date>
         <year>2022</year>
@@ -97,8 +97,8 @@
         <day>13</day>
       </date>
       <placeNumber>12</placeNumber>
-    </Concert>
-    <Concert ref="3">
+    </concert>
+    <concert ref="3">
       <name>ZenBamboo</name>
       <date>
         <year>2022</year>
@@ -106,8 +106,8 @@
         <day>14</day>
       </date>
       <placeNumber>40</placeNumber>
-    </Concert>
-    <Concert ref="4">
+    </concert>
+    <concert ref="4">
       <name>WD-40</name>
       <date>
         <year>2022</year>
@@ -115,8 +115,8 @@
         <day>14</day>
       </date>
       <placeNumber>800</placeNumber>
-    </Concert>
-    <Concert ref="10">
+    </concert>
+    <concert ref="10">
       <name>Philippe Bruneau</name>
       <date>
         <year>2022</year>
@@ -124,8 +124,8 @@
         <day>10</day>
       </date>
       <placeNumber>50</placeNumber>
-    </Concert>
-    <Concert ref="11">
+    </concert>
+    <concert ref="11">
       <name>Les Charbonniers de l'Enfer</name>
       <date>
         <year>2022</year>
@@ -133,8 +133,8 @@
         <day>10</day>
       </date>
       <placeNumber>20</placeNumber>
-    </Concert>
-    <Concert ref="12">
+    </concert>
+    <concert ref="12">
       <name>Garolou</name>
       <date>
         <year>2022</year>
@@ -142,8 +142,8 @@
         <day>10</day>
       </date>
       <placeNumber>30</placeNumber>
-    </Concert>
-    <Concert ref="13">
+    </concert>
+    <concert ref="13">
       <name>Alfred Montmarquette</name>
       <date>
         <year>2022</year>
@@ -151,7 +151,7 @@
         <day>10</day>
       </date>
       <placeNumber>25</placeNumber>
-    </Concert>
+    </concert>
   </EventCatalog>
   <showrooms>
     <showroom id="0">

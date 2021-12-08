@@ -55,7 +55,7 @@ public class ServiceTest extends TestCase {
 		
 		repo.save(city2);
 		
-		CityService service = new CityService(repo, catalog, new LinkedList<>()) ;
+		CityService service = new CityService(repo, new LinkedList<>()) ;
 		
 		// test getConcerts
 		List<Concert> concertGets = service.getConcerts(city.getId()) ;

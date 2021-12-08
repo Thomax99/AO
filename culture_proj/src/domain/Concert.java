@@ -14,8 +14,19 @@ import exceptions.NegativePlaceQuantityException;
 public class Concert extends Event {
 	private final Date date;
 	private final Name name;
+	/**
+	 * For repository
+	 */
+	public Concert(int year, int month, int day, String artistName, int placeNumber, int ref)
+			throws ForbiddenDateException, NegativePlaceQuantityException {
+		super(placeNumber, ref) ;
+		this.date = DateUtilitaries.createDate(year, month, day) ;
+		this.name = new Name(artistName) ;
+	}
 
-	public Concert(int year, int month, int day, String artistName, int placeNumber) throws ForbiddenDateException, NegativePlaceQuantityException {
+
+	public Concert(int year, int month, int day, String artistName, int placeNumber) 
+			throws ForbiddenDateException, NegativePlaceQuantityException {
 		super(placeNumber) ;
 		this.date = DateUtilitaries.createDate(year, month, day) ;
 		this.name = new Name(artistName) ;

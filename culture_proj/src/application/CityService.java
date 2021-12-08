@@ -30,7 +30,7 @@ public class CityService extends Observable {
 	private Map<Integer, String> verificationMessages ;
 	private int nbCitiesAttached;
 	private List<Worker> workers;
-	public CityService(Repository repo, EventCatalog events, List<Worker> workers) {
+	public CityService(Repository repo, List<Worker> workers) {
 		errors = new TreeMap<>() ;
 		this.repo = repo ;
 		this.nbCitiesAttached = repo.getNumberCities() ;
