@@ -31,6 +31,7 @@ public class RepoProxy implements Repository {
 		if (city == null) {
 			city = xmlRepo.findCityById(id) ;
 			if (city != null) {
+				nbCities++ ; // cite non enregistree par le proxyRepo
 				memRepo.save(city);
 			}
 		}
